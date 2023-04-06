@@ -263,6 +263,7 @@ function ShootDetected() {
    if ((32 in keysDown)) {
       clearInterval(ShootInterval);
       console.log("Shoot Detected");
+      console.log("ShootDetected ! ");
       console.log("ShootDetected : Player_X : "+player.x+" Player_Y:"+player.y);
       bullet.bulletShot = true;
       bullet.x = player.x;
