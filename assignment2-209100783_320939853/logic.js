@@ -8,6 +8,8 @@ const enemyColSize = 4;
 const playerImageSrc = "resources/player-craft-1-smallest.png.jpg";
 const enemyImageSrc = "resources/small-enemy.jpg";
 const bulletimgSrc = "resources/laser.png";
+const bulletCollisionIntervalSpeed = 1;
+var bulletCollisionInterval;
 var enemyMovmentIntervalSpd;
 var enemyInterval = null;
 var enemySpaceCraft;
@@ -163,11 +165,14 @@ class Bullet {
 
    }
    draw(ctx) {
-      ctx.drawImage(bullet.image, bullet.x, bullet.y-bulletImageSizeHeight-playerImageSize,bulletImageSizeWidth,bulletImageSizeHeight);
+      ctx.drawImage(bullet.image, bullet.x, bullet.y-playerImageSize,bulletImageSizeWidth,bulletImageSizeHeight);
    }
    clearAndDrawBullet(x, y, ctx) {
-      ctx.clearRect(x, y-bulletImageSizeHeight, bulletImageSizeWidth, bulletImageSizeHeight);
-      ctx.drawImage(bullet.image, bullet.x, bullet.y-bulletImageSizeHeight,bulletImageSizeWidth,bulletImageSizeHeight);
+      ctx.clearRect(x, y, bulletImageSizeWidth, bulletImageSizeHeight);
+      this.draw(ctx);
+   }
+   clear(ctx){
+      ctx.clearRect(this.x, this.y, bulletImageSizeWidth, bulletImageSizeHeight);
    }
 }
 
@@ -260,45 +265,54 @@ function generateRandomNumberInInterval(min, max) {
 }
 function ShootDetected() {
    if(bullet.bulletShot==false){
-   if ((32 in keysDown)) {
-      clearInterval(ShootInterval);
-      console.log("Shoot Detected");
-      console.log("ShootDetected : Player_X : "+player.x+" Player_Y:"+player.y);
-      bullet.bulletShot = true;
-      bullet.x = player.x;
-      bullet.y = player.y;
-      bullet.draw(ctx);
-      BulletMovmentIntervalSpd = 30
-      MovingBullet = window.setInterval(MoveBullet,BulletMovmentIntervalSpd);
+      if ((32 in keysDown)) {
+         clearInterval(ShootInterval);
+         console.log("Shoot Detected");
+         console.log("ShootDetected : Player_X : "+player.x+" Player_Y:"+player.y);
+         bullet.bulletShot = true;
+         bullet.x = player.x;
+         bullet.y = player.y - bulletImageSizeHeight;
+         console.log(bullet.y);
+         console.log(player.y);
+         bullet.draw(ctx);
+         BulletMovmentIntervalSpd = 25;
+         MovingBullet = window.setInterval(MoveBullet,BulletMovmentIntervalSpd);
+         bulletCollisionInterval = window.setInterval(BulletCollision,bulletCollisionIntervalSpeed);
+      }
    }
 }
-}
+
+
+
 function MoveBullet(){
    x_loc = bullet.x;
    y_loc = bullet.y;
    //Bullet Did not cross the Canvas Height
+      // check canvas = 0
       if (y_loc - bullet.speed >= 0) {
          // console.log("Bullet.y before : " + bullet.y)
-         bullet.y = bullet.y-bullet.speed;
+         bullet.y = bullet.y-bullet.speed;   
          // console.log("Bullet.y after : "+bullet.y)
          bullet.clearAndDrawBullet(x_loc, y_loc, ctx);
-         if(BulletCollision())
-         {
-            bullet.bulletShot = false;
-            ctx.clearRect(x_loc, y_loc-bulletImageSizeHeight, bulletImageSizeWidth, bulletImageSizeHeight);
-            clearInterval(MovingBullet);
-            ShootInterval = window.setInterval(ShootDetected, TIME_INTERVAL);
-         }
+         // TODO seperate interval 
          //for movement of clearAndDraw
-         y_loc = bullet.y+30;
+         // y_loc = bullet.y+30;
       }
       //Bullet crossed the canvas Height
       else {
-         bullet.bulletShot = false;
-         clearInterval(MovingBullet);
-         ShootInterval = window.setInterval(ShootDetected, TIME_INTERVAL); 
+         stopBulletInterval();
       }
    }
+
+function stopBulletInterval(){
+   clearInterval(bulletCollisionInterval);
+   clearInterval(MovingBullet);
+   ShootInterval = window.setInterval(ShootDetected, TIME_INTERVAL);
+   bullet.bulletShot = false;
+   bullet.clear(ctx);
+
+}
+
 
    //While Bullet is moving - check for collision
 function BulletCollision()
@@ -309,18 +323,21 @@ function BulletCollision()
          let enemyP = element[y];
          if(enemyP.alive)
          {
-         if(enemyP.x <= bullet.x+20 && enemyP.x >= bullet.x-20 && enemyP.y <bullet.y+20 && enemyP.y >= bullet.y-20)
-         {
-            console.log("X Equals");
-            console.log("Y Equals");
-            enemyP.alive=false;
-            return true;
+            if(enemyP.x <= bullet.x && enemyP.x + enemyImageSizeWidth >= bullet.x + bulletImageSizeWidth && enemyP.y + enemyImageSizeHeight == bullet.y)
+            {
+               console.log("X Equals");
+               console.log("Y Equals");
+               console.log(enemyP.x , enemyP.y);
+               console.log(bullet.x , bullet.y);
+               enemyP.alive=false;
+               stopBulletInterval();
+               return true;
+            }
          }
       }
-      }
-      }
-      return false;  
-   } 
+   }
+   return false;  
+} 
 function updatePlayerPosition() {
    let player_x = player.x;
    let player_y = player.y;
