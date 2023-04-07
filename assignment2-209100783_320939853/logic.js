@@ -8,7 +8,7 @@ const enemyColSize = 4;
 const playerImageSrc = "resources/player-craft-1-smallest.png.jpg";
 const enemyImageSrc = "resources/small-enemy.jpg";
 const bulletimgSrc = "resources/laser.png";
-const bulletCollisionIntervalSpeed = 1;
+const bulletCollisionIntervalSpeed = 0.25;
 var bulletCollisionInterval;
 var enemyMovmentIntervalSpd;
 var enemyInterval = null;
@@ -160,7 +160,7 @@ class Bullet {
       this.image = new Image()
       this.image.src = imagesrc;
       this.stepSize = stepSize;
-      this.speed = 30+1;
+      this.speed = 15;
       this.bulletShot = false;
 
    }
@@ -272,10 +272,8 @@ function ShootDetected() {
          bullet.bulletShot = true;
          bullet.x = player.x;
          bullet.y = player.y - bulletImageSizeHeight;
-         console.log(bullet.y);
-         console.log(player.y);
          bullet.draw(ctx);
-         BulletMovmentIntervalSpd = 25;
+         BulletMovmentIntervalSpd = 30;
          MovingBullet = window.setInterval(MoveBullet,BulletMovmentIntervalSpd);
          bulletCollisionInterval = window.setInterval(BulletCollision,bulletCollisionIntervalSpeed);
       }
@@ -289,7 +287,7 @@ function MoveBullet(){
    y_loc = bullet.y;
    //Bullet Did not cross the Canvas Height
       // check canvas = 0
-      if (y_loc - bullet.speed >= 0) {
+      if (y_loc - bullet.speed > 0) {
          // console.log("Bullet.y before : " + bullet.y)
          bullet.y = bullet.y-bullet.speed;   
          // console.log("Bullet.y after : "+bullet.y)
@@ -301,6 +299,7 @@ function MoveBullet(){
       //Bullet crossed the canvas Height
       else {
          stopBulletInterval();
+         ctx.clearRect(0,0,canvas.width, 20);
       }
    }
 
@@ -312,6 +311,18 @@ function stopBulletInterval(){
    bullet.clear(ctx);
 
 }
+function CheckLowerEnemiesDead(index, enIndex)
+{
+   let enemyCraft = enemySpaceCraft.enemy;
+   for(let y = index+1; y <enemyCraft.length;y++)
+   {
+      if(enemyCraft[y][enIndex].alive)
+      {
+         return false;
+      }
+   }
+   return true;
+}
 
 
    //While Bullet is moving - check for collision
@@ -321,9 +332,9 @@ function BulletCollision()
       let element = enemySpaceCraft.enemy[index];
       for (let y = 0; y < element.length; y++) {
          let enemyP = element[y];
-         if(enemyP.alive)
+         if(enemyP.alive && CheckLowerEnemiesDead(index,y))
          {
-            if(enemyP.x <= bullet.x && enemyP.x + enemyImageSizeWidth >= bullet.x + bulletImageSizeWidth && enemyP.y + enemyImageSizeHeight == bullet.y)
+            if(enemyP.x - 5 <= bullet.x && enemyP.x + enemyImageSizeWidth + 5 >= bullet.x + bulletImageSizeWidth && enemyP.y + enemyImageSizeHeight >= bullet.y && enemyP.y <= bullet.y)
             {
                console.log("X Equals");
                console.log("Y Equals");
