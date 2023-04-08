@@ -296,8 +296,6 @@ function drawSpaceCraft() {
       }
    }
 }
-
-
 function draw() {
    player.draw(ctx);
    enemySpaceCraft.drawSpaceCraft(ctx);
@@ -504,7 +502,6 @@ function PlayerHit()
 
    //TODO : Add Stats
 }
-   //While Bullet is moving - check for collision
 function updatePlayerPosition() {
    let player_x = player.x;
    let player_y = player.y;
@@ -566,6 +563,7 @@ function checkCollisionOnLeft() {
 
 }
 function moveEnemeyShip() {
+   //Start Enemies Bullets Shooting
    ShootEnemiesBullets();
    if (enemySpaceCraft.moveRight) {
       if (checkCollisionOnRight()) {
