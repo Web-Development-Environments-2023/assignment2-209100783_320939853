@@ -1,13 +1,16 @@
 const playerImageSize = 30;
-const bulletImageSizeHeight = 150;
-const bulletImageSizeWidth = 30;
+const bulletImageSizeHeight = 100;
+const bulletImageSizeWidth = 15;
 const enemyImageSizeHeight = 30;
 const enemyImageSizeWidth = 41;
+const enemyBulletImageSizeHeight = 100;
+const enemyBulletImageSizewidth = 15;
 const enemyRowSize = 5;
 const enemyColSize = 4;
 const playerImageSrc = "resources/player-craft-1-smallest.png.jpg";
 const enemyImageSrc = "resources/small-enemy.jpg";
 const bulletimgSrc = "resources/laser.png";
+const enemyBulletimgsrc = "resources/bullet_bad.png";
 const bulletCollisionIntervalSpeed = 0.25;
 var bulletCollisionInterval;
 var enemyMovmentIntervalSpd;
@@ -28,6 +31,13 @@ var bullet;
 var bulletimg;
 var BulletMovmentIntervalSpd;
 var MovingBullet= null;
+
+var EnemyBulletFirst;
+var EnemyBulletSecond;
+var MovingFirstEnemyBullet;
+var MovingSecondEnemyBullet;
+var EnemyBulletFirstCollision;
+var EnemyBulletSecondCollision;
 class SpaceCraft {
    constructor(colNumber, rowNumber, speed) {
       this.colNumber = colNumber;
@@ -62,7 +72,6 @@ class SpaceCraft {
             if (enemyP.alive) {
                ctx.drawImage(enemyP.image, enemyP.x, enemyP.y);
             }
-
          }
 
       }
@@ -132,6 +141,7 @@ class Player {
 
    constructor(imagesrc, imgSize, stepSize) {
       this.x;
+      this.startx;
       this.y;
       this.image = new Image(imgSize, imgSize);
       this.image.src = imagesrc;
@@ -147,12 +157,17 @@ class Player {
       ctx.clearRect(x - 20, y - 20, x + playerImageSize, y + playerImageSize);
       ctx.drawImage(player.image, player.x, player.y);
    }
+   clear(ctx)
+   {
+      ctx.clearRect(this.x, this.y, playerImageSize, playerImageSize);
+   }
    hitByEnemy() { }
 
    colisionDetect(obj, objWidth, objHeight) {
 
    }
 }
+//TODO : rearrange code 
 class Bullet {
    constructor(imagesrc, stepSize) {
       this.x;
@@ -175,6 +190,30 @@ class Bullet {
       ctx.clearRect(this.x, this.y, bulletImageSizeWidth, bulletImageSizeHeight);
    }
 }
+class EnemyBullet{
+   constructor(imagesrc)
+   {
+      this.x;
+      this.y;
+      this.image = new Image();
+      this.image.src = imagesrc;
+      this.speed = 15;
+      this.alive = false;
+   }
+   draw(ctx)
+   {
+      ctx.drawImage(this.image,this.x, this.y, enemyBulletImageSizewidth,enemyBulletImageSizeHeight);
+   }
+   clearAndDrawEnemyBullet(x, y, ctx)
+   {
+      ctx.clearRect(x, y, enemyBulletImageSizewidth,enemyBulletImageSizeHeight);
+      this.draw(ctx);
+   }
+   clear(ctx){
+      ctx.clearRect(this.x, this.y, bulletImageSizeWidth, bulletImageSizeHeight);
+   }
+
+}
 
 window.addEventListener('keydown', function (e) {
    keysDown[e.keyCode] = true;
@@ -194,6 +233,11 @@ function initgame() {
    }
    enemySpaceCraft = new SpaceCraft(enemyColSize, enemyRowSize, enemyStepSize);
    bullet = new Bullet(bulletimgSrc, 5);
+
+   //Initialize Enemy Bullets
+   EnemyBulletFirst = new EnemyBullet(enemyBulletimgsrc);
+   EnemyBulletSecond = new EnemyBullet(enemyBulletimgsrc);
+   EnemyBulletMovementIntervalSpd = 30;
 
    startGameBtn = document.getElementById("startButton");
    startGameBtn.addEventListener("click", setUpGame, false);
@@ -218,8 +262,6 @@ function stopTimer() {
    window.clearInterval(intervalTimer);
 } // end function stopTimer
 
-
-
 function setUpGame() {
    stopTimer();
    if (enemyInterval != null) {
@@ -229,7 +271,8 @@ function setUpGame() {
    console.log("clicked start game");
 
    player.x = generateRandomNumberInInterval(0, canvas.width - 30);
-   player.y = canvas.height - 30
+   player.startx = player.x;
+   player.y = canvas.height - 30;
    enemySpaceCraft = new SpaceCraft(enemyColSize, enemyRowSize, enemyStepSize);
 
    //TODO: SPACESHIPS START FROM LEFT CORNER
@@ -274,41 +317,161 @@ function ShootDetected() {
          bullet.y = player.y - bulletImageSizeHeight;
          bullet.draw(ctx);
          BulletMovmentIntervalSpd = 30;
-         MovingBullet = window.setInterval(MoveBullet,BulletMovmentIntervalSpd);
+         MovingBullet = window.setInterval(MoveBulletPlayer,BulletMovmentIntervalSpd);
          bulletCollisionInterval = window.setInterval(BulletCollision,bulletCollisionIntervalSpeed);
       }
    }
 }
-
-
-
-function MoveBullet(){
-   x_loc = bullet.x;
-   y_loc = bullet.y;
-   //Bullet Did not cross the Canvas Height
-      // check canvas = 0
-      if (y_loc - bullet.speed > 0) {
-         // console.log("Bullet.y before : " + bullet.y)
-         bullet.y = bullet.y-bullet.speed;   
-         // console.log("Bullet.y after : "+bullet.y)
-         bullet.clearAndDrawBullet(x_loc, y_loc, ctx);
-         // TODO seperate interval 
-         //for movement of clearAndDraw
-         // y_loc = bullet.y+30;
-      }
-      //Bullet crossed the canvas Height
-      else {
-         stopBulletInterval();
-         ctx.clearRect(0,0,canvas.width, 20);
+function GenerateRandomSpaceShipinInterval()
+{
+   row = Math.floor(Math.random() * enemyRowSize);
+   col = Math.floor(Math.random() * enemyColSize);
+   return [col,row];
+}
+function RandomSpaceShip()
+{
+   let arr = GenerateRandomSpaceShipinInterval();
+   col = arr[0];
+   row = arr[1];
+   let RandEnemyShip = enemySpaceCraft.enemy[col][row];
+   //IF EnemyShip is Dead => It cant shoot.
+   while(RandEnemyShip.alive == false)
+   {
+      arr = GenerateRandomSpaceShipinInterval();
+      col = arr[0];
+      row = arr[1];
+      RandEnemyShip = enemySpaceCraft.enemy[col][row];
+   }
+   return RandEnemyShip;
+}
+//Conditions for Shooting EnemyBulletFirst
+function FirstBulletConditions()
+{
+   if(EnemyBulletFirst.alive == false && (EnemyBulletSecond.alive==false || (EnemyBulletSecond.alive && EnemyBulletSecond.y + enemyBulletImageSizeHeight>= 0.75*canvas.height)))
+   {return true;}
+   return false;
+}
+//Conditions for Shooting EnemyBulletSecond
+function SecondBulletConditions()
+{
+   if(EnemyBulletFirst.alive == true && EnemyBulletSecond.alive == false)
+   {
+      if(EnemyBulletFirst.y + enemyBulletImageSizeHeight >= 0.75*canvas.height)
+      {return true;}
+   }
+   return false;
+}
+function ShootEnemiesBullets(){
+   if(FirstBulletConditions())
+   {
+      let RandEnemyShip = RandomSpaceShip();
+      EnemyBulletFirst.x = RandEnemyShip.x;
+      EnemyBulletFirst.y = RandEnemyShip.y;
+      EnemyBulletFirst.alive = true;
+      EnemyBulletFirst.draw(ctx);
+      MovingFirstEnemyBullet = window.setInterval(MoveEnemyFirstBullet,EnemyBulletMovementIntervalSpd);
+      console.log("Shooting Bullet#1");
+      EnemyBulletFirstCollision = window.setInterval(CollisionEnemyBulletFirst, EnemyBulletMovementIntervalSpd);
+   }
+   if(SecondBulletConditions())
+   {  
+         let RandEnemyShip2 = RandomSpaceShip();
+         EnemyBulletSecond.x = RandEnemyShip2.x;
+         EnemyBulletSecond.y = RandEnemyShip2.y;
+         EnemyBulletSecond.alive = true;
+         EnemyBulletSecond.draw(ctx);
+         MovingSecondEnemyBullet = window.setInterval(MoveEnemySecondBullet,EnemyBulletMovementIntervalSpd);
+         console.log("Shooting Bullet#2");
+         EnemyBulletSecondCollision = window.setInterval(CollisionEnemyBulletSecond, EnemyBulletMovementIntervalSpd);
+   }
+}
+function MoveEnemyFirstBullet()
+{
+   x_loc = EnemyBulletFirst.x;
+   y_loc = EnemyBulletFirst.y;
+   if(y_loc + EnemyBulletFirst.speed <= canvas.height)
+   {
+      EnemyBulletFirst.y = EnemyBulletFirst.y + EnemyBulletFirst.speed;
+      EnemyBulletFirst.clearAndDrawEnemyBullet(x_loc, y_loc, ctx);
+   }
+   else
+   {
+      clearInterval(MovingFirstEnemyBullet);
+      EnemyBulletFirst.alive = false;
+   }
+}
+function MoveEnemySecondBullet()
+{
+   x_loc = EnemyBulletSecond.x;
+   y_loc = EnemyBulletSecond.y;
+   if(y_loc + EnemyBulletSecond.speed <= canvas.height)
+   {
+      EnemyBulletSecond.y = EnemyBulletSecond.y + EnemyBulletSecond.speed;
+      EnemyBulletSecond.clearAndDrawEnemyBullet(x_loc, y_loc, ctx);
+   }
+   else
+   {
+      clearInterval(MovingSecondEnemyBullet);
+      EnemyBulletSecond.alive = false;
+   }
+}
+function EnemyCollisionConditions(enemyBullet)
+{
+   if((enemyBullet.x >= player.x - 5)&& (enemyBullet.x + enemyBulletImageSizewidth <= player.x + playerImageSize + 5) && ( enemyBullet.y + enemyBulletImageSizeHeight <= player.y +playerImageSize) && (enemyBullet.y + enemyBulletImageSizeHeight >= player.y -5))
+   {return true;}
+   return false;
+}
+function CollisionEnemyBulletFirst(){
+   if(EnemyCollisionConditions(EnemyBulletFirst))
+   {
+      console.log("HIT! By First");
+      PlayerHit();
+   }
+}
+function CollisionEnemyBulletSecond(){
+   if(EnemyCollisionConditions(EnemyBulletSecond))
+   {
+      console.log("HIT! By Second");
+      PlayerHit();
+   }
+}
+function BulletCollision()
+{
+   for (let index = 0; index < enemySpaceCraft.enemy.length; index++) {
+      let element = enemySpaceCraft.enemy[index];
+      for (let y = 0; y < element.length; y++) {
+         let enemyP = element[y];
+         if(enemyP.alive && CheckLowerEnemiesDead(index,y))
+         {
+            if((enemyP.x - 5 <= bullet.x) && (enemyP.x + enemyImageSizeWidth + 5 >= bullet.x + bulletImageSizeWidth) && (enemyP.y + enemyImageSizeHeight >= bullet.y) && (enemyP.y <= bullet.y))
+            {
+               enemyP.alive=false;
+               stopBulletInterval();
+               return true;
+            }
+         }
       }
    }
-
-function stopBulletInterval(){
-   clearInterval(bulletCollisionInterval);
-   clearInterval(MovingBullet);
-   ShootInterval = window.setInterval(ShootDetected, TIME_INTERVAL);
-   bullet.bulletShot = false;
-   bullet.clear(ctx);
+   return false;  
+} 
+function MoveBulletPlayer(){
+   x_loc = bullet.x;
+   y_loc = bullet.y;
+   if (y_loc - bullet.speed > 0) {
+      bullet.y = bullet.y-bullet.speed;   
+         bullet.clearAndDrawBullet(x_loc, y_loc, ctx);
+      }
+      else {
+         stopBulletInterval(MovingBullet);
+      }
+   }
+   function stopBulletInterval(){
+      clearInterval(bulletCollisionInterval);
+      clearInterval(MovingBullet);
+      ShootInterval = window.setInterval(ShootDetected, TIME_INTERVAL);
+      bullet.bulletShot = false;
+      bullet.clear(ctx);
+      ctx.clearRect(0,0,canvas.width, 20);
 
 }
 function CheckLowerEnemiesDead(index, enIndex)
@@ -324,31 +487,24 @@ function CheckLowerEnemiesDead(index, enIndex)
    return true;
 }
 
-
-   //While Bullet is moving - check for collision
-function BulletCollision()
+function PlayerHit()
 {
-   for (let index = 0; index < enemySpaceCraft.enemy.length; index++) {
-      let element = enemySpaceCraft.enemy[index];
-      for (let y = 0; y < element.length; y++) {
-         let enemyP = element[y];
-         if(enemyP.alive && CheckLowerEnemiesDead(index,y))
-         {
-            if(enemyP.x - 5 <= bullet.x && enemyP.x + enemyImageSizeWidth + 5 >= bullet.x + bulletImageSizeWidth && enemyP.y + enemyImageSizeHeight >= bullet.y && enemyP.y <= bullet.y)
-            {
-               console.log("X Equals");
-               console.log("Y Equals");
-               console.log(enemyP.x , enemyP.y);
-               console.log(bullet.x , bullet.y);
-               enemyP.alive=false;
-               stopBulletInterval();
-               return true;
-            }
-         }
-      }
-   }
-   return false;  
-} 
+   EnemyBulletSecond.alive = false;
+   EnemyBulletSecond.clear(ctx);
+   EnemyBulletFirst.alive = false;
+   EnemyBulletFirst.clear(ctx);
+   player.clear(ctx);
+   player.x = player.startx;
+   player.y = player.y = canvas.height - 30;
+   //Clear All Shooting Intervals
+   clearInterval(MovingFirstEnemyBullet);
+   clearInterval(EnemyBulletFirstCollision);
+   clearInterval(MovingSecondEnemyBullet);
+   clearInterval(EnemyBulletSecondCollision);
+
+   //TODO : Add Stats
+}
+   //While Bullet is moving - check for collision
 function updatePlayerPosition() {
    let player_x = player.x;
    let player_y = player.y;
@@ -394,7 +550,6 @@ function checkCollisionOnRight() {
    if (enemyRight.x + enemyStepSize + enemyImageSizeWidth > canvas.width) {
       enemySpaceCraft.moveRight = false;
       return false;
-
    }
    // case the space craft isn't colliding on the right side return true
    return true;
@@ -405,15 +560,14 @@ function checkCollisionOnLeft() {
    if (enemyRight.x - enemyStepSize < 0) {
       enemySpaceCraft.moveRight = true;
       return false;
-
    }
    // case the space craft isn't colliding on the left side return true
    return true;
 
 }
 function moveEnemeyShip() {
+   ShootEnemiesBullets();
    if (enemySpaceCraft.moveRight) {
-
       if (checkCollisionOnRight()) {
          // move all enemy x pos right by enemy step size
          enemySpaceCraft.clearEnemyShip(ctx);
@@ -421,7 +575,6 @@ function moveEnemeyShip() {
          drawSpaceCraft();
          return true;
       }
-
    }
    if (!enemySpaceCraft.moveRight) {
       if (checkCollisionOnLeft()) {
@@ -430,10 +583,7 @@ function moveEnemeyShip() {
          enemySpaceCraft.moveEnemiesLeft();
          drawSpaceCraft();
       }
-
    }
-
-
 }
 
 window.addEventListener("load", initgame, false)
