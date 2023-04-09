@@ -6,7 +6,6 @@ var passwordInput;
 var loginPagebtn;
 var registerPagebtn;
 var loginbtn;
-alert("hey");
 function initbtns(){
    loginPagebtn = document.getElementById("moveToLoginPage");
    loginPagebtn.addEventListener("click",loginPage,false);
