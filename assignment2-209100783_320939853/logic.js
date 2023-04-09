@@ -134,6 +134,8 @@ class Enemy {
       this.alive = true;
       this.image = new Image(imgWidth, imgHeight);
       this.image.src = imgSrc;
+      this.width = enemyImageSizeWidth;
+      this.height = enemyImageSizeHeight;
    }
 };
 
@@ -143,8 +145,10 @@ class Player {
       this.x;
       this.startx;
       this.y;
-      this.image = new Image(playerImageSize, playerImageSize);
-      this.image.src = playerImageSrc;
+      this.image = new Image(imgSize, imgSize);
+      this.image.src = imagesrc;
+      this.width = playerImageSize;
+      this.height = playerImageSize;
       this.hits = 0;
       this.stepSize = playerStepSize;
       this.score = 0;
@@ -171,8 +175,10 @@ class Player {
 //TODO : rearrange code 
 class Bullet {
    constructor(imagesrc, stepSize) {
-      this.x;
-      this.y;
+      this.x_start;
+      this.y_start;
+      this.x_end;
+      this.y_end;
       this.image = new Image()
       this.image.src = imagesrc;
       this.stepSize = stepSize;
@@ -181,21 +187,23 @@ class Bullet {
 
    }
    draw(ctx) {
-      ctx.drawImage(bullet.image, bullet.x, bullet.y-playerImageSize,bulletImageSizeWidth,bulletImageSizeHeight);
+      ctx.drawImage(bullet.image, bullet.x_start, bullet.y_start-playerImageSize,bulletImageSizeWidth,bulletImageSizeHeight);
    }
    clearAndDrawBullet(x, y, ctx) {
       ctx.clearRect(x, y, bulletImageSizeWidth, bulletImageSizeHeight);
       this.draw(ctx);
    }
    clear(ctx){
-      ctx.clearRect(this.x, this.y, bulletImageSizeWidth, bulletImageSizeHeight);
+      ctx.clearRect(this.x_start, this.y_start, bulletImageSizeWidth, bulletImageSizeHeight);
    }
 }
 class EnemyBullet{
    constructor(imagesrc)
    {
-      this.x;
-      this.y;
+      this.x_start;
+      this.y_start;
+      this.y_end;
+      this.x_end;
       this.image = new Image();
       this.image.src = imagesrc;
       this.speed = 15;
@@ -203,7 +211,7 @@ class EnemyBullet{
    }
    draw(ctx)
    {
-      ctx.drawImage(this.image,this.x, this.y, enemyBulletImageSizewidth,enemyBulletImageSizeHeight);
+      ctx.drawImage(this.image,this.x_start, this.y_start, enemyBulletImageSizewidth,enemyBulletImageSizeHeight);
    }
    clearAndDrawEnemyBullet(x, y, ctx)
    {
@@ -211,7 +219,7 @@ class EnemyBullet{
       this.draw(ctx);
    }
    clear(ctx){
-      ctx.clearRect(this.x, this.y, bulletImageSizeWidth, bulletImageSizeHeight);
+      ctx.clearRect(this.x_start, this.y_start, bulletImageSizeWidth, bulletImageSizeHeight);
    }
 
 }
@@ -313,8 +321,10 @@ function ShootDetected() {
          console.log("Shoot Detected");
          console.log("ShootDetected : Player_X : "+player.x+" Player_Y:"+player.y);
          bullet.bulletShot = true;
-         bullet.x = player.x;
-         bullet.y = player.y - bulletImageSizeHeight;
+         bullet.x_start = player.x;
+         bullet.y_start = player.y - bulletImageSizeHeight;
+         bullet.x_end = bullet.x_start + bulletImageSizeWidth;
+         bullet.y_end = bullet.y_start + bulletImageSizeHeight;
          bullet.draw(ctx);
          BulletMovmentIntervalSpd = 30;
          MovingBullet = window.setInterval(MoveBulletPlayer,BulletMovmentIntervalSpd);
@@ -347,10 +357,8 @@ function RandomSpaceShip()
 //Conditions for Shooting EnemyBulletFirst
 function FirstBulletConditions()
 {
-   if(EnemyBulletFirst.alive == false && (EnemyBulletSecond.alive==false || (EnemyBulletSecond.alive && EnemyBulletSecond.y + enemyBulletImageSizeHeight>= 0.75*canvas.height)))
-   {
-      return true;
-   }
+   if(EnemyBulletFirst.alive == false && (EnemyBulletSecond.alive==false || (EnemyBulletSecond.alive && EnemyBulletSecond.y_start + enemyBulletImageSizeHeight>= 0.75*canvas.height)))
+   {return true;}
    return false;
 }
 //Conditions for Shooting EnemyBulletSecond
@@ -358,10 +366,8 @@ function SecondBulletConditions()
 {
    if(EnemyBulletFirst.alive == true && EnemyBulletSecond.alive == false)
    {
-      if(EnemyBulletFirst.y + enemyBulletImageSizeHeight >= 0.75*canvas.height)
-      {
-         return true;
-      }
+      if(EnemyBulletFirst.y_start + enemyBulletImageSizeHeight >= 0.75*canvas.height)
+      {return true;}
    }
    return false;
 }
@@ -369,8 +375,10 @@ function ShootEnemiesBullets(){
    if(FirstBulletConditions())
    {
       let RandEnemyShip = RandomSpaceShip();
-      EnemyBulletFirst.x = RandEnemyShip.x;
-      EnemyBulletFirst.y = RandEnemyShip.y;
+      EnemyBulletFirst.x_start = RandEnemyShip.x;
+      EnemyBulletFirst.y_start = RandEnemyShip.y;
+      EnemyBulletFirst.y_end = EnemyBulletFirst.y_start + enemyBulletImageSizeHeight;
+      EnemyBulletFirst.x_end = EnemyBulletFirst.x_start + enemyBulletImageSizewidth;
       EnemyBulletFirst.alive = true;
       EnemyBulletFirst.draw(ctx);
       MovingFirstEnemyBullet = window.setInterval(MoveEnemyFirstBullet,EnemyBulletMovementIntervalSpd);
@@ -380,8 +388,10 @@ function ShootEnemiesBullets(){
    if(SecondBulletConditions())
    {  
          let RandEnemyShip2 = RandomSpaceShip();
-         EnemyBulletSecond.x = RandEnemyShip2.x;
-         EnemyBulletSecond.y = RandEnemyShip2.y;
+         EnemyBulletSecond.x_start = RandEnemyShip2.x;
+         EnemyBulletSecond.y_start = RandEnemyShip2.y;
+         EnemyBulletSecond.y_end = EnemyBulletSecond.y_start + enemyBulletImageSizeHeight;
+         EnemyBulletSecond.x_end = EnemyBulletSecond.x_start + enemyBulletImageSizewidth;
          EnemyBulletSecond.alive = true;
          EnemyBulletSecond.draw(ctx);
          MovingSecondEnemyBullet = window.setInterval(MoveEnemySecondBullet,EnemyBulletMovementIntervalSpd);
@@ -391,38 +401,50 @@ function ShootEnemiesBullets(){
 }
 function MoveEnemyFirstBullet()
 {
-   x_loc = EnemyBulletFirst.x;
-   y_loc = EnemyBulletFirst.y;
+   x_loc = EnemyBulletFirst.x_start;
+   y_loc = EnemyBulletFirst.y_start;
    if(y_loc + EnemyBulletFirst.speed <= canvas.height)
    {
-      EnemyBulletFirst.y = EnemyBulletFirst.y + EnemyBulletFirst.speed;
+      EnemyBulletFirst.y_start = EnemyBulletFirst.y_start + EnemyBulletFirst.speed;
+      EnemyBulletFirst.y_end = EnemyBulletFirst.y_end + EnemyBulletFirst.speed;
       EnemyBulletFirst.clearAndDrawEnemyBullet(x_loc, y_loc, ctx);
    }
    else
    {
       clearInterval(MovingFirstEnemyBullet);
+      clearInterval(EnemyBulletFirstCollision);
       EnemyBulletFirst.alive = false;
    }
 }
 function MoveEnemySecondBullet()
 {
-   x_loc = EnemyBulletSecond.x;
-   y_loc = EnemyBulletSecond.y;
+   x_loc = EnemyBulletSecond.x_start;
+   y_loc = EnemyBulletSecond.y_start;
    if(y_loc + EnemyBulletSecond.speed <= canvas.height)
    {
-      EnemyBulletSecond.y = EnemyBulletSecond.y + EnemyBulletSecond.speed;
+      EnemyBulletSecond.y_start = EnemyBulletSecond.y_start + EnemyBulletSecond.speed;
+      EnemyBulletSecond.y_end = EnemyBulletSecond.y_end + EnemyBulletSecond.speed;
       EnemyBulletSecond.clearAndDrawEnemyBullet(x_loc, y_loc, ctx);
    }
    else
    {
       clearInterval(MovingSecondEnemyBullet);
+      clearInterval(EnemyBulletSecondCollision);
       EnemyBulletSecond.alive = false;
    }
 }
-function EnemyCollisionConditions(enemyBullet)
+function enemyCollisionCondition_1(enemyBullet)
 {
    if((enemyBullet.x >= player.x - 5)&& (enemyBullet.x + enemyBulletImageSizewidth <= player.x + playerImageSize + 5) && ( enemyBullet.y + enemyBulletImageSizeHeight <= player.y +playerImageSize) && (enemyBullet.y + enemyBulletImageSizeHeight >= player.y -5))
    {return true;}
+   return false;
+}
+function EnemyCollisionConditions(enemyBullet)
+{
+   if(enemyCollisionCondition_1(enemyBullet) || CollisionCondition_2(player, enemyBullet) || CollisionCondition_3(player, enemyBullet) || CollisionCondition_4(player,enemyBullet))
+   {
+      return true;
+   }
    return false;
 }
 function CollisionEnemyBulletFirst(){
@@ -439,18 +461,87 @@ function CollisionEnemyBulletSecond(){
       PlayerHit();
    }
 }
+function CollisionCondition_1(enemyP)
+{
+   if(enemyP.x - 10 <= bullet.x_start && enemyP.x + enemyP.width + 10 >= bullet.x_end)
+   {
+      if(enemyP.y+ enemyP.height >= bullet.y_start && enemyP.y <= bullet.y_start)
+      {
+         return true;
+      }
+   }
+   return false;
+}
+function CollisionCondition_2(obj, bulletS)
+{
+   if(bulletS.x_start >= obj.x && bulletS.x_start < obj.x + obj.width && bulletS.x_end <= obj.x + obj.width)
+   {
+      if(((obj.y + obj.height >= bulletS.y_start) && (obj.y <= bulletS.y_start)) || (bulletS.y_end <= obj.y + obj.height && bulletS.y_end >= obj.y))
+      {return true;}
+   }
+   return false;
+}
+
+function CollisionCondition_3(obj,bulletS)
+{
+   if(obj.y >= bulletS.y_start && obj.y + obj.height <= bulletS.y_end)
+   {
+      //Right
+      if(obj.x + obj.width >= bulletS.x_start && obj.x + obj.width <= bulletS.x_end)
+      {
+         return true;
+      }
+      //Left
+      if(obj.x <= bulletS.x_end && obj.x >= bulletS.x_start)
+      {
+         return true;
+      }
+      //Middle 
+      if(obj.x < bulletS.x_start && obj.x+obj.width > bulletS.x_end)
+      {
+         return true;
+      }
+   }
+   return false; 
+}
+function CollisionCondition_4(obj,bulletS)
+{
+   if(obj.y < bulletS.y_end && bulletS.y_end < obj.y + obj.height)
+   {
+      //left
+      if(obj.x + obj.width > bulletS.x_end && bulletS.x_end > obj.x)
+      {
+         return true;
+      }
+      //right
+      if(bulletS.x_start < obj.x + obj.width && bulletS.x_start > obj.x)
+      {
+         return true;
+      }
+   }
+   return false;
+}
+
 function BulletCollision()
 {
    for (let index = 0; index < enemySpaceCraft.enemy.length; index++) {
       let element = enemySpaceCraft.enemy[index];
       for (let y = 0; y < element.length; y++) {
          let enemyP = element[y];
-         if(enemyP.alive && CheckLowerEnemiesDead(index,y))
+         // if(enemyP.alive && CheckLowerEnemiesDead(index,y))
+         if(enemyP.alive)
          {
-            if((enemyP.x - 5 <= bullet.x) && (enemyP.x + enemyImageSizeWidth + 5 >= bullet.x + bulletImageSizeWidth) && (enemyP.y + enemyImageSizeHeight >= bullet.y) && (enemyP.y <= bullet.y))
+            // if((enemyP.x - 10 <= bullet.x_start) && (enemyP.x + enemyImageSizeWidth + 10 >= bullet.x_end) &&( ((enemyP.y + enemyImageSizeHeight >= bullet.y_start) && (enemyP.y <= bullet.y_start)) || (bullet.y_end <= enemyP.y + enemyBulletImageSizeHeight && bullet.y_end >= enemyP.y) ))
+            if(CollisionCondition_1(enemyP) || CollisionCondition_2(enemyP,bullet) || CollisionCondition_3(enemyP,bullet) || CollisionCondition_4(enemyP,bullet))
             {
                enemyP.alive=false;
                stopBulletInterval();
+               if(SpaceCraftArmyIsDead())
+               {
+                  window.alert("You've Killed Succesfully entire SpaceCraft ! ");
+                  //ResetGame
+                  setUpGame();
+               }
                return true;
             }
          }
@@ -459,10 +550,12 @@ function BulletCollision()
    return false;  
 } 
 function MoveBulletPlayer(){
-   x_loc = bullet.x;
-   y_loc = bullet.y;
+   x_loc = bullet.x_start;
+   y_loc = bullet.y_start;
    if (y_loc - bullet.speed > 0) {
-      bullet.y = bullet.y-bullet.speed;   
+      bullet.y_start = bullet.y_start-bullet.speed;
+      bullet.y_end = bullet.y_end - bullet.speed;
+
          bullet.clearAndDrawBullet(x_loc, y_loc, ctx);
       }
       else {
@@ -505,8 +598,26 @@ function PlayerHit()
    clearInterval(EnemyBulletFirstCollision);
    clearInterval(MovingSecondEnemyBullet);
    clearInterval(EnemyBulletSecondCollision);
-
    //TODO : Add Stats
+}
+function SpaceCraftArmyIsDead()
+{
+   console.log("CHECKING DEAD");
+   let enemyCraft = enemySpaceCraft.enemy;
+   console.log(enemyCraft);
+   console.log(enemyCraft.length);
+   console.log(enemyCraft[0].length);
+   for(let y = 0; y <enemyCraft.length;y++)
+   {
+      for(let j = 0; j < enemyCraft[y].length; j++)
+      {
+         if(enemyCraft[y][j].alive)
+         {
+            return false;
+         }
+      }
+   }
+   return true;
 }
 function updatePlayerPosition() {
    let player_x = player.x;
