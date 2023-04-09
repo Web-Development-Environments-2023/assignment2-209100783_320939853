@@ -3,19 +3,100 @@
       <meta charset = "utf-8">
       <title>Chicken Invaders</title>
 	   <script src = "logic.js"></script>
-      <link rel="stylesheet" type="text/css" href="style.css" />
+      <script src = "front-end.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <!-- <link rel="stylesheet" type="text/css" href="style.css" /> -->
+      <link rel="stylesheet" type="text/css" href="frontend.css" />
 
    </head>
    <body>
-      <div class="main">
-
-         <div class="gameCanvas">
-            <canvas id = "theCanvas" width = "1000" height = "600"></canvas>
+      <div class="container">
+         <div id="welcomePage">
+            <div id = welcomePagebtns>
+               <button type="button" id ="moveToLoginPage">Login</button>
+               <button type="button" id ="registerbtn">Register</button>
+            </div>
          </div>
-         <input id = "startButton" type = "button" value = "Start Game">
+      </div>
 
+      <div class="container">
+         <div id="loginPage">
+            <div id="logintext">
+               <h1 id="logintext_H">Login</h1>
+            </div>
+            <ul id="loginDetailsList">
+               <li><input id = "username" type = "text" value = "Enter User Name"></li>
+               <li><input id = "password" type = "password" value = "Enter Password"></li>
+               <li><button type="button" id ="loginbtn">Login</button></li>
+            </ul>
+         </div>
+      </div>
+
+   
+
+      <div class="container">
+         <div id="gamePage">
+            <div id="scoreBord">
+               <table id="scoreBordTable">
+                  <tr>
+                     <th scope="col">Player name</th>
+                     <th scope="col">Score</th>
+                  </tr>
+                  
+               </table>
+            </div>
+            <div id="gameCanvas">
+               <canvas id = "theCanvas"  width = "1000" height= "600"></canvas>
+            </div>
+            <div id="gameButtons">
+               <input id = "startButton" type = "button" value = "Start Game">
+               <input id = "logoutbtn" type = "button" value = "Logout">
+
+            </div>
+         </div>
 
       </div>
-        
+      <div class="container">
+         <div id="registerPage">
+               <ul id="registerDetailsList">
+                  <li><input id = "usernameInput" type = "text" value = "Enter User Name"></li>
+                  <li><input id = "passwordInput" type = "password" value = "Enter Password"></li>
+                  <li><input id = "passwordVerifyInput" type = "text" value = "Re Enter Password"></li>
+                  <li><input id = "firstNameInput" type = "text" value = " Enter firt name"></li>
+                  <li><input id = "lastNameInput" type = "text" value = "Enter last name"></li>
+                  <li><input id = "emailInput" type = "email" value = "Enter email"></li>
+                  <li><input id = "birthDateInput" type = "text" value = "Choose Date"></li>
+                  <li><button type="button" id ="loginbtn">Login</button></li>
+               </ul>
+               <button type="button" id ="registerbtn">Submit</button>
+         </div>
+         
+      </div>
+      <!-- <div class="main">
+         
+
+         <div id="loginPage">
+            <div class="btn">
+               <input id = "username" type = "text" value = "Enter User Name">
+            
+            
+               <input id = "password" type = "password" value = "Enter Password">
+            
+            
+               <button type="button" id ="loginbtn">Login</button>         
+            </div>
+         </div>
+
+         <div class="gameCanvas">
+            <canvas id = "theCanvas"  width = "1000" height= "600"></canvas>
+         </div>
+
+         <input id = "startButton" type = "button" value = "Start Game">
+         
+         <div id="footer">
+            <p>hey</p>
+         </div>
+      </div> -->
+      
    </body>
 </html>

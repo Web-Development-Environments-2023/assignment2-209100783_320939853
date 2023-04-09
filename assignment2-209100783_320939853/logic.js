@@ -139,15 +139,16 @@ class Enemy {
 
 class Player {
 
-   constructor(imagesrc, imgSize, stepSize) {
+   constructor() {
       this.x;
       this.startx;
       this.y;
-      this.image = new Image(imgSize, imgSize);
-      this.image.src = imagesrc;
+      this.image = new Image(playerImageSize, playerImageSize);
+      this.image.src = playerImageSrc;
       this.hits = 0;
-      this.stepSize = stepSize;
+      this.stepSize = playerStepSize;
       this.score = 0;
+      this.username;
 
    }
    draw(ctx) {
@@ -214,7 +215,6 @@ class EnemyBullet{
    }
 
 }
-
 window.addEventListener('keydown', function (e) {
    keysDown[e.keyCode] = true;
 });
@@ -227,10 +227,7 @@ function initgame() {
    canvas = document.getElementById("theCanvas");
    ctx = canvas.getContext("2d");
    playerBorder = Math.floor(canvas.height * 0.6)
-   if (player == null) {
-      player = new Player(playerImageSrc, playerImageSize, playerStepSize);
-      console.log("Initialized Player");
-   }
+  
    enemySpaceCraft = new SpaceCraft(enemyColSize, enemyRowSize, enemyStepSize);
    bullet = new Bullet(bulletimgSrc, 5);
 
@@ -241,7 +238,12 @@ function initgame() {
 
    startGameBtn = document.getElementById("startButton");
    startGameBtn.addEventListener("click", setUpGame, false);
+
+   // init Lead Bord with event 
+   dispatchEvent(new Event("getusertable"));
    console.log("Game Init")
+   document.getElementById("logoutbtn").addEventListener("click",logoutgame,false);
+
 }
 
 
@@ -263,7 +265,7 @@ function stopTimer() {
 } // end function stopTimer
 
 function setUpGame() {
-   stopTimer();
+   stopTimer();         
    if (enemyInterval != null) {
       window.clearInterval(enemyInterval);
    }
@@ -346,7 +348,9 @@ function RandomSpaceShip()
 function FirstBulletConditions()
 {
    if(EnemyBulletFirst.alive == false && (EnemyBulletSecond.alive==false || (EnemyBulletSecond.alive && EnemyBulletSecond.y + enemyBulletImageSizeHeight>= 0.75*canvas.height)))
-   {return true;}
+   {
+      return true;
+   }
    return false;
 }
 //Conditions for Shooting EnemyBulletSecond
@@ -355,7 +359,9 @@ function SecondBulletConditions()
    if(EnemyBulletFirst.alive == true && EnemyBulletSecond.alive == false)
    {
       if(EnemyBulletFirst.y + enemyBulletImageSizeHeight >= 0.75*canvas.height)
-      {return true;}
+      {
+         return true;
+      }
    }
    return false;
 }
@@ -583,5 +589,110 @@ function moveEnemeyShip() {
       }
    }
 }
+/* ------------------------------- */
 
-window.addEventListener("load", initgame, false)
+function registerUser(userTable,username){
+   // this function is called when a new user is register and return the new HashMap {username : player}
+   let tempPlayer = new Player();
+   tempPlayer.username = username;
+   userTable.set(username,tempPlayer)
+   return userTable;
+
+}
+
+
+function verifiedUser(obj){
+   //obj.usertable = userPlayerTable, obj.username = username
+   //  this function is called only when a user gained access to the game with right user name and password
+   // that means that he is already registered and exsits in the userTable hashmap
+   // this function initialize the game and the leadbord
+   let userPlayerTable = obj.usertable;
+   let username = obj.username;
+   player = userPlayerTable.get(username);
+   initgame();
+}
+
+
+
+
+
+
+
+function updatePlayerScore(amount){
+   player.score += amount;
+   let score = document.getElementById("score_"+player.username);
+   score.innerText = player.score;
+
+}
+
+
+
+
+function createUserTableRow(val,key,map){
+   
+   let table = document.getElementById("scoreBordTable");
+   if (document.getElementById(val.username) == null){
+      let tr = document.createElement("tr");
+      tr.id = val.username;
+      let tdPlayer = document.createElement("td");
+      let tdScore = document.createElement("td");
+      tdPlayer.id = "user_"+val.username
+      tdScore.id = "score_"+val.username
+
+
+      tdPlayer.innerText = val.username;
+      tdScore.innerText = val.score;
+      tr.appendChild(tdPlayer);
+      tr.appendChild(tdScore);
+      table.appendChild(tr);
+   }
+
+
+}
+function getPlayersTable(){
+	// $.getScript("front-end.js", function(){
+ 	// 	 return getPlayersTable();
+	// });
+}
+
+function createLeadBord(usertable_out){
+   
+   let userTable = usertable_out;
+   userTable.forEach(createUserTableRow);
+
+}
+
+function initAdminPlayer(username){
+   // this function only invoke when the game first started;
+   let ply = new Player();
+   ply.username = username;
+   window.removeEventListener("defaultUsr",function(e){},false);
+   dispatchEvent(new CustomEvent("returnplayer",{detail:ply}))
+}
+
+// window.addEventListener("load", initgame, false)
+window.addEventListener("defaultUsr",function(e){
+   initAdminPlayer(e.detail)
+},false);
+
+// this is event handler when a user has benn verified
+window.addEventListener("verifeduser",function(e){
+   verifiedUser(e.detail);
+},false);
+
+window.addEventListener("usertable",function(e){
+   createLeadBord(e.detail);
+
+})
+function logoutgame(){
+   savePlayerStats();
+   stopTimer();
+   clearCanvas();
+   document.getElementById("gamePage").style.display = "none";
+   document.getElementById("welcomePage").style.display = "grid";
+
+}
+function savePlayerStats(){
+   //TODO implement this
+}
+
