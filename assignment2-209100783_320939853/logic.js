@@ -145,8 +145,8 @@ class Player {
       this.x;
       this.startx;
       this.y;
-      this.image = new Image(imgSize, imgSize);
-      this.image.src = imagesrc;
+      this.image = new Image(playerImageSize, playerImageSize);
+      this.image.src = playerImageSrc;
       this.width = playerImageSize;
       this.height = playerImageSize;
       this.hits = 0;
