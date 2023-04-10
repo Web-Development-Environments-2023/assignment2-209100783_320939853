@@ -38,6 +38,9 @@ var MovingFirstEnemyBullet;
 var MovingSecondEnemyBullet;
 var EnemyBulletFirstCollision;
 var EnemyBulletSecondCollision;
+
+
+var UserTable;
 class SpaceCraft {
    constructor(colNumber, rowNumber, speed) {
       this.colNumber = colNumber;
@@ -152,6 +155,7 @@ class Player {
       this.hits = 0;
       this.stepSize = playerStepSize;
       this.score = 0;
+      this.CurrGameScore = 0;
       this.username;
 
    }
@@ -238,6 +242,11 @@ function initgame() {
   
    enemySpaceCraft = new SpaceCraft(enemyColSize, enemyRowSize, enemyStepSize);
    bullet = new Bullet(bulletimgSrc, 5);
+
+   player.CurrGameScore = 0;
+   player.hits = 0;
+   console.log("Init Game");
+   console.log("player Total Game Score  : " + player.score);
 
    //Initialize Enemy Bullets
    EnemyBulletFirst = new EnemyBullet(enemyBulletimgsrc);
@@ -528,19 +537,20 @@ function BulletCollision()
       let element = enemySpaceCraft.enemy[index];
       for (let y = 0; y < element.length; y++) {
          let enemyP = element[y];
-         // if(enemyP.alive && CheckLowerEnemiesDead(index,y))
          if(enemyP.alive)
          {
-            // if((enemyP.x - 10 <= bullet.x_start) && (enemyP.x + enemyImageSizeWidth + 10 >= bullet.x_end) &&( ((enemyP.y + enemyImageSizeHeight >= bullet.y_start) && (enemyP.y <= bullet.y_start)) || (bullet.y_end <= enemyP.y + enemyBulletImageSizeHeight && bullet.y_end >= enemyP.y) ))
             if(CollisionCondition_1(enemyP) || CollisionCondition_2(enemyP,bullet) || CollisionCondition_3(enemyP,bullet) || CollisionCondition_4(enemyP,bullet))
             {
                enemyP.alive=false;
                stopBulletInterval();
+               PlayerHitReward(index);
+               console.log("Player Current Game Score : " + player.CurrGameScore);
                if(SpaceCraftArmyIsDead())
                {
                   window.alert("You've Killed Succesfully entire SpaceCraft ! ");
-                  //ResetGame
-                  setUpGame();
+                  StopGame();
+                  //Adding Current Player Score to Total Game Score
+                  player.score += player.CurrGameScore;
                }
                return true;
             }
@@ -583,7 +593,58 @@ function CheckLowerEnemiesDead(index, enIndex)
    }
    return true;
 }
-
+function PlayerHitReward(index)
+{
+   if(index == 3)
+   {
+      player.CurrGameScore += 5;
+   }
+   if(index == 2)
+   {
+      player.CurrGameScore += 10;
+   }
+   if(index == 1)
+   { 
+      player.CurrGameScore += 15;
+   }
+   if(index == 0)
+   {
+      player.CurrGameScore += 20;
+   }
+}
+function StopGame()
+{
+   //Need to return to Init Screen
+   //ResetGame
+   //enemyMovement Interval
+   clearInterval(enemyInterval);
+   //ShootingPlayer bullets Interval
+   clearInterval(ShootInterval);
+   //ShootingEnemiesInterval
+   clearInterval(MovingFirstEnemyBullet);
+   clearInterval(EnemyBulletFirstCollision);
+   clearInterval(MovingSecondEnemyBullet);
+   clearInterval(EnemyBulletSecondCollision);
+   //
+   stopTimer();
+   clearCanvas();
+   UpdateTableScore();
+   initgame();
+   //Dispatch Event of Updating Table Score
+}
+function PlayerPenaltyHit()
+{
+   player.hits += 1;
+   if(player.hits == 3)
+   {
+      //Adding Current Player Score to Total Game Score
+      player.score += player.CurrGameScore;
+      console.log("Player Total Score : " + player.score);
+      console.log("Playe Current Game Score : " + player.CurrGameScore);
+      window.alert("3 Hits - Game Over");
+      StopGame();
+   }
+}
 function PlayerHit()
 {
    EnemyBulletSecond.alive = false;
@@ -592,13 +653,14 @@ function PlayerHit()
    EnemyBulletFirst.clear(ctx);
    player.clear(ctx);
    player.x = player.startx;
-   player.y = player.y = canvas.height - 30;
+   player.y = player.y = canvas.height - playerImageSize;
    //Clear All Shooting Intervals
    clearInterval(MovingFirstEnemyBullet);
    clearInterval(EnemyBulletFirstCollision);
    clearInterval(MovingSecondEnemyBullet);
    clearInterval(EnemyBulletSecondCollision);
    //TODO : Add Stats
+   PlayerPenaltyHit();
 }
 function SpaceCraftArmyIsDead()
 {
@@ -708,15 +770,14 @@ function registerUser(userTable,username){
    tempPlayer.username = username;
    userTable.set(username,tempPlayer)
    return userTable;
-
 }
-
 
 function verifiedUser(obj){
    //obj.usertable = userPlayerTable, obj.username = username
    //  this function is called only when a user gained access to the game with right user name and password
    // that means that he is already registered and exsits in the userTable hashmap
    // this function initialize the game and the leadbord
+   UserTable = obj.usertable;
    let userPlayerTable = obj.usertable;
    let username = obj.username;
    player = userPlayerTable.get(username);
@@ -724,21 +785,19 @@ function verifiedUser(obj){
 }
 
 
-
-
-
-
-
-function updatePlayerScore(amount){
-   player.score += amount;
-   let score = document.getElementById("score_"+player.username);
-   score.innerText = player.score;
-
+// function updatePlayerScore(amount){
+//    player.score += amount;
+//    let score = document.getElementById("score_"+player.username);
+//    score.innerText = player.score;
+// }
+function UpdateTableScore()
+{
+   let table = document.getElementById("scoreBordTable");
+   console.log(table);
+   let tdPlayer = document.getElementById("user_" + player.username);
+   let tdScore = document.getElementById("score_"+ player.username);
+   tdScore.innerText = player.score;
 }
-
-
-
-
 function createUserTableRow(val,key,map){
    
    let table = document.getElementById("scoreBordTable");
@@ -747,8 +806,9 @@ function createUserTableRow(val,key,map){
       tr.id = val.username;
       let tdPlayer = document.createElement("td");
       let tdScore = document.createElement("td");
-      tdPlayer.id = "user_"+val.username
-      tdScore.id = "score_"+val.username
+      tdPlayer.id = "user_"+val.username;
+      //////////
+      tdScore.id = "score_"+val.username;
 
 
       tdPlayer.innerText = val.username;
@@ -757,8 +817,6 @@ function createUserTableRow(val,key,map){
       tr.appendChild(tdScore);
       table.appendChild(tr);
    }
-
-
 }
 function getPlayersTable(){
 	// $.getScript("front-end.js", function(){
@@ -767,7 +825,7 @@ function getPlayersTable(){
 }
 
 function createLeadBord(usertable_out){
-   
+   console.log(usertable_out);
    let userTable = usertable_out;
    userTable.forEach(createUserTableRow);
 
@@ -793,7 +851,6 @@ window.addEventListener("verifeduser",function(e){
 
 window.addEventListener("usertable",function(e){
    createLeadBord(e.detail);
-
 })
 function logoutgame(){
    savePlayerStats();
