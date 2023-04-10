@@ -547,7 +547,7 @@ function BulletCollision()
                console.log("Player Current Game Score : " + player.CurrGameScore);
                if(SpaceCraftArmyIsDead())
                {
-                  window.alert("You've Killed Succesfully entire SpaceCraft ! ");
+                  window.alert("Champion!");
                   StopGame();
                   //Adding Current Player Score to Total Game Score
                   player.score += player.CurrGameScore;
@@ -572,7 +572,7 @@ function MoveBulletPlayer(){
          stopBulletInterval(MovingBullet);
       }
    }
-   function stopBulletInterval(){
+function stopBulletInterval(){
       clearInterval(bulletCollisionInterval);
       clearInterval(MovingBullet);
       ShootInterval = window.setInterval(ShootDetected, TIME_INTERVAL);
@@ -641,7 +641,7 @@ function PlayerPenaltyHit()
       player.score += player.CurrGameScore;
       console.log("Player Total Score : " + player.score);
       console.log("Playe Current Game Score : " + player.CurrGameScore);
-      window.alert("3 Hits - Game Over");
+      window.alert("You Lost");
       StopGame();
    }
 }
@@ -785,19 +785,12 @@ function verifiedUser(obj){
 }
 
 
-// function updatePlayerScore(amount){
-//    player.score += amount;
-//    let score = document.getElementById("score_"+player.username);
-//    score.innerText = player.score;
-// }
 function UpdateTableScore()
 {
-   let table = document.getElementById("scoreBordTable");
-   console.log(table);
-   let tdPlayer = document.getElementById("user_" + player.username);
    let tdScore = document.getElementById("score_"+ player.username);
    tdScore.innerText = player.score;
 }
+
 function createUserTableRow(val,key,map){
    
    let table = document.getElementById("scoreBordTable");
@@ -807,10 +800,7 @@ function createUserTableRow(val,key,map){
       let tdPlayer = document.createElement("td");
       let tdScore = document.createElement("td");
       tdPlayer.id = "user_"+val.username;
-      //////////
       tdScore.id = "score_"+val.username;
-
-
       tdPlayer.innerText = val.username;
       tdScore.innerText = val.score;
       tr.appendChild(tdPlayer);
@@ -825,10 +815,8 @@ function getPlayersTable(){
 }
 
 function createLeadBord(usertable_out){
-   console.log(usertable_out);
    let userTable = usertable_out;
    userTable.forEach(createUserTableRow);
-
 }
 
 function initAdminPlayer(username){
