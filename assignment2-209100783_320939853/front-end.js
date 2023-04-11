@@ -100,7 +100,7 @@ function ConfigurationValidation()
    {
       ShootingKeyCode = getKeyCode(ShootingKey);
       console.log("ShootingKey : " + ShootingKey +" ShootingKeyCode : " + ShootingKeyCode);
-      if(ShootingKeyCode >= 48 && ShootingKeyCode <= 90 || ShootingKeyCode == 32)
+      if(ShootingKeyCode >= 65 && ShootingKeyCode <= 90 || ShootingKeyCode == 32)
       {
          return true;
       }
