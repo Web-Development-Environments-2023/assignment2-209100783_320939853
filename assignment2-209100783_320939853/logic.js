@@ -12,9 +12,16 @@ const enemyImageSrc = "resources/small-enemy.jpg";
 const bulletimgSrc = "resources/laser.png";
 const enemyBulletimgsrc = "resources/bullet_bad.png";
 const bulletCollisionIntervalSpeed = 0.25;
+//Intervals
 var bulletCollisionInterval;
 var enemyMovmentIntervalSpd;
-var enemyInterval = null;
+var enemyInterval;
+var MovingFirstEnemyBullet;
+var MovingSecondEnemyBullet;
+var EnemyBulletFirstCollision;
+var EnemyBulletSecondCollision;
+var ShootInterval;
+//
 var enemySpaceCraft;
 var enemyStepSize = 12;
 var playerStepSize = 5;
@@ -34,10 +41,7 @@ var MovingBullet= null;
 
 var EnemyBulletFirst;
 var EnemyBulletSecond;
-var MovingFirstEnemyBullet;
-var MovingSecondEnemyBullet;
-var EnemyBulletFirstCollision;
-var EnemyBulletSecondCollision;
+
 
 
 var UserTable;
@@ -227,13 +231,6 @@ class EnemyBullet{
    }
 
 }
-window.addEventListener('keydown', function (e) {
-   keysDown[e.keyCode] = true;
-});
-window.addEventListener('keyup', function (e) {
-   delete keysDown[e.keyCode];
-});
-
 function initgame() {
 
    canvas = document.getElementById("theCanvas");
@@ -243,8 +240,6 @@ function initgame() {
    enemySpaceCraft = new SpaceCraft(enemyColSize, enemyRowSize, enemyStepSize);
    bullet = new Bullet(bulletimgSrc, 5);
 
-   player.CurrGameScore = 0;
-   player.hits = 0;
    console.log("Init Game");
    console.log("player Total Game Score  : " + player.score);
 
@@ -260,7 +255,6 @@ function initgame() {
    dispatchEvent(new Event("getusertable"));
    console.log("Game Init")
    document.getElementById("logoutbtn").addEventListener("click",logoutgame,false);
-
 }
 
 
@@ -269,41 +263,66 @@ function clearCanvas() {
 }
 
 
-function startTimer() {
+function StartIntervals() {
+   window.addEventListener('keydown', function (e) {
+      keysDown[e.keyCode] = true;
+   });
+   window.addEventListener('keyup', function (e) {
+      delete keysDown[e.keyCode];
+   });
    intervalTimer = window.setInterval(updatePlayerPosition, TIME_INTERVAL);
    ShootInterval = window.setInterval(ShootDetected, TIME_INTERVAL);
+   enemyInterval = window.setInterval(moveEnemeyShip, enemyMovmentIntervalSpd);
    console.log("Intervals Initiated - startTimer");
 } // end function startTimer
 
 // terminate interval timer
-function stopTimer() {
-   removeEventListener("keydown", function (e) { console.log(e.keyCode); updatePlayerPosition(e.keyCode) }, false);
-   window.clearInterval(intervalTimer);
-} // end function stopTimer
-
-function setUpGame() {
-   stopTimer();         
+function StopIntervals() {
+   removeEventListener('keydown', function (e) { keysDown[e.keyCode] = true; }, false);
+   removeEventListener('keyup', function (e) {delete keysDown[e.keyCode];});
+   keysDown={};
+   if (intervalTimer != null) {
+      window.clearInterval(intervalTimer);
+   }
+   if (ShootInterval != null) {
+      window.clearInterval(ShootInterval);
+   }
    if (enemyInterval != null) {
       window.clearInterval(enemyInterval);
    }
+   if(MovingFirstEnemyBullet != null)
+   {clearInterval(MovingFirstEnemyBullet);}
+
+   if(EnemyBulletFirstCollision != null)
+   {clearInterval(EnemyBulletFirstCollision);}
+
+   if(MovingSecondEnemyBullet != null)
+   {clearInterval(MovingSecondEnemyBullet);}
+
+   if(EnemyBulletSecondCollision != null)
+   {clearInterval(EnemyBulletSecondCollision);}
+   console.log("Intervals Cleared - StopIntervals");
+} // end function stopTimer
+
+function setUpGame() {
+   StopIntervals();         
    clearCanvas();
    console.log("clicked start game");
 
    player.x = generateRandomNumberInInterval(0, canvas.width - 30);
    player.startx = player.x;
-   player.y = canvas.height - 30;
+   player.y = canvas.height - playerImageSize;
    enemySpaceCraft = new SpaceCraft(enemyColSize, enemyRowSize, enemyStepSize);
 
-   //TODO: SPACESHIPS START FROM LEFT CORNER
-   console.log("SetUpgame : Player X:" + player.x);
-   console.log("SetUpgame :Player Y:" + player.y);
-   console.log("SetUpgame :Player Coordinates reInitialized");
+   EnemyBulletFirst.alive = false;
+   EnemyBulletSecond.alive = false;
+   player.CurrGameScore = 0;
+   player.hits = 0;
+
    //Speed
    enemyMovmentIntervalSpd = 60;
-   enemyInterval = setInterval(moveEnemeyShip, enemyMovmentIntervalSpd);
-   startTimer();
+   StartIntervals();
    draw();
-
 }
 function drawSpaceCraft() {
    for (let index = 0; index < enemySpaceCraft.enemy.length; index++) {
@@ -326,9 +345,8 @@ function generateRandomNumberInInterval(min, max) {
 function ShootDetected() {
    if(bullet.bulletShot==false){
       if ((32 in keysDown)) {
-         clearInterval(ShootInterval);
+         window.clearInterval(ShootInterval);
          console.log("Shoot Detected");
-         console.log("ShootDetected : Player_X : "+player.x+" Player_Y:"+player.y);
          bullet.bulletShot = true;
          bullet.x_start = player.x;
          bullet.y_start = player.y - bulletImageSizeHeight;
@@ -616,17 +634,8 @@ function StopGame()
 {
    //Need to return to Init Screen
    //ResetGame
-   //enemyMovement Interval
-   clearInterval(enemyInterval);
-   //ShootingPlayer bullets Interval
-   clearInterval(ShootInterval);
-   //ShootingEnemiesInterval
-   clearInterval(MovingFirstEnemyBullet);
-   clearInterval(EnemyBulletFirstCollision);
-   clearInterval(MovingSecondEnemyBullet);
-   clearInterval(EnemyBulletSecondCollision);
-   //
-   stopTimer();
+   //ClearIntervals
+   StopIntervals();
    clearCanvas();
    UpdateTableScore();
    initgame();
@@ -842,7 +851,7 @@ window.addEventListener("usertable",function(e){
 })
 function logoutgame(){
    savePlayerStats();
-   stopTimer();
+   StopIntervals();
    clearCanvas();
    document.getElementById("gamePage").style.display = "none";
    document.getElementById("welcomePage").style.display = "grid";
