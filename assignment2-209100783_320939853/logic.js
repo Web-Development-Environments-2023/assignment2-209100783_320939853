@@ -41,6 +41,8 @@ var MovingBullet= null;
 
 var EnemyBulletFirst;
 var EnemyBulletSecond;
+//
+// var ShootingBttn;
 
 
 
@@ -344,7 +346,7 @@ function generateRandomNumberInInterval(min, max) {
 }
 function ShootDetected() {
    if(bullet.bulletShot==false){
-      if ((32 in keysDown)) {
+      if ((ShootingKeyCode in keysDown)) {
          window.clearInterval(ShootInterval);
          console.log("Shoot Detected");
          bullet.bulletShot = true;
@@ -850,6 +852,9 @@ window.addEventListener("verifeduser",function(e){
 window.addEventListener("usertable",function(e){
    createLeadBord(e.detail);
 })
+// window.addEventListener("ShootingKeyConfigured", function(e){
+
+// })
 function logoutgame(){
    savePlayerStats();
    StopIntervals();
