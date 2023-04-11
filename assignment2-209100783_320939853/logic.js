@@ -752,6 +752,7 @@ function checkCollisionOnLeft() {
 }
 function moveEnemeyShip() {
    //Start Enemies Bullets Shooting
+   console.log("ShootEnemiesBullets();");
    ShootEnemiesBullets();
    if (enemySpaceCraft.moveRight) {
       if (checkCollisionOnRight()) {
