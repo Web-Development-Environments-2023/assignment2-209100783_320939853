@@ -42,19 +42,38 @@
                      <th scope="col">Player name</th>
                      <th scope="col">Score</th>
                   </tr>
-                  
                </table>
             </div>
             <div id="gameCanvas">
                <canvas id = "theCanvas"  width = "1000" height= "600"></canvas>
             </div>
+            <div id="timerLifeBar">
+               <table id="Timer&LifeTable" style="border: none;">
+                  <tr>
+                     <th style="width: 150px; border: none; text-align: center;">Life Bar</th>
+                     <th style="width: 500px; border:none;">Timer</th>
+                  </tr>
+                  <tr>
+                     <th style="border: none;">
+                        <table id="LifeTable" style="border: none;">
+                           <tr style="border: none;">
+                              <th style="width: 150px; border: none;"><img src="resources/heart.gif" id="FirstLifeIMG" width="50" height="50" ></th>
+                              <th style="width: 150px; border: none;"><img src="resources/heart.gif" id="SecondLifeIMG" width="50" height="50" ></th>
+                              <th style="width: 150px; border: none;"><img src="resources/heart.gif" id="ThirdLifeIMG" width="50" height="50" ></th>
+                           </tr>
+                        </table>
+                     </th>
+                     <th style="border: none;">
+                        <!-- here will be the timer -->
+                     </th>
+                  </tr>
+               </table>
+            </div>
             <div id="gameButtons">
                <input id = "startButton" type = "button" value = "Start Game">
                <input id = "logoutbtn" type = "button" value = "Logout">
-
             </div>
          </div>
-
       </div>
       <div class="container">
          <div id="registerPage">
@@ -72,7 +91,7 @@
          </div>
       </div>
       <div class="container">
-         <div id ="configurationPage">
+         <div id ="configurationPage" style="display: none";>
             <h1>Game Configuration</h1>
             <h2>Here We Will Set Our Configuration Settings Before Game Starts</h2>
             <h3>When You are ready to proceed -> Click the Button</h3>
@@ -82,7 +101,5 @@
             </ul>
          </div>
       </div>
- 
-      
    </body>
 </html>

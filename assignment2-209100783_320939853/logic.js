@@ -42,8 +42,9 @@ var MovingBullet= null;
 var EnemyBulletFirst;
 var EnemyBulletSecond;
 //
-// var ShootingBttn;
-
+var FirstLife;
+var SecondLife;
+var ThirdLife;
 
 
 var UserTable;
@@ -244,7 +245,10 @@ function initgame() {
 
    console.log("Init Game");
    console.log("player Total Game Score  : " + player.score);
-
+   //Init Life Images
+   FirstLife=document.getElementById('FirstLifeIMG');
+   SecondLife=document.getElementById('SecondLifeIMG');
+   ThirdLife=document.getElementById('ThirdLifeIMG');
    //Initialize Enemy Bullets
    EnemyBulletFirst = new EnemyBullet(enemyBulletimgsrc);
    EnemyBulletSecond = new EnemyBullet(enemyBulletimgsrc);
@@ -305,8 +309,14 @@ function StopIntervals() {
    {clearInterval(EnemyBulletSecondCollision);}
    console.log("Intervals Cleared - StopIntervals");
 } // end function stopTimer
-
+function VisibleLifeImages()
+{
+   FirstLife.style.visibility="visible";
+   SecondLife.style.visibility="visible";
+   ThirdLife.style.visibility="visible";
+}
 function setUpGame() {
+   VisibleLifeImages();
    StopIntervals();         
    clearCanvas();
    console.log("clicked start game");
@@ -643,17 +653,35 @@ function StopGame()
    initgame();
    //Dispatch Event of Updating Table Score
 }
+function KillLifeBarImages()
+{
+   console.log("KillLifeBarImages")
+   if(player.hits == 1)
+   {
+      FirstLife.style.visibility="hidden";
+   }
+   if(player.hits == 2)
+   {
+      SecondLife.style.visibility="hidden";
+   }
+   if(player.hits == 3)
+   {
+      ThirdLife.style.visibility="hidden";
+   }
+}
 function PlayerPenaltyHit()
 {
    player.hits += 1;
+   //Killing Images
+   KillLifeBarImages();
    if(player.hits == 3)
    {
       //Adding Current Player Score to Total Game Score
       player.score += player.CurrGameScore;
       console.log("Player Total Score : " + player.score);
       console.log("Playe Current Game Score : " + player.CurrGameScore);
-      window.alert("You Lost");
       StopGame();
+      window.alert("You Lost");
    }
 }
 function PlayerHit()
