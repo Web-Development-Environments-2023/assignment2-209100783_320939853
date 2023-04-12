@@ -1,14 +1,14 @@
 const playerImageSize = 30;
 const bulletImageSizeHeight = 100;
 const bulletImageSizeWidth = 15;
-const enemyImageSizeHeight = 30;
-const enemyImageSizeWidth = 41;
+const enemyImageSizeHeight = 50;
+const enemyImageSizeWidth = 50;
 const enemyBulletImageSizeHeight = 100;
 const enemyBulletImageSizewidth = 15;
 const enemyRowSize = 5;
 const enemyColSize = 4;
 const playerImageSrc = "resources/player-craft-1-smallest.png.jpg";
-const enemyImageSrc = "resources/small-enemy.jpg";
+const enemyImageSrc = "resources/Enemy_GIF.gif";
 const bulletimgSrc = "resources/laser.png";
 const enemyBulletimgsrc = "resources/bullet_bad.png";
 const bulletCollisionIntervalSpeed = 0.25;
@@ -41,10 +41,19 @@ var MovingBullet= null;
 
 var EnemyBulletFirst;
 var EnemyBulletSecond;
-//
+//For Life Images
 var FirstLife;
 var SecondLife;
 var ThirdLife;
+//Timer
+var now;
+var timeLeft;
+var minutesLeft;
+var secondsLeft;
+var TimerInterval;
+var countDownDate;
+//Game Score Bar
+var gscorebar;
 
 
 var UserTable;
@@ -80,32 +89,33 @@ class SpaceCraft {
          for (let y = 0; y < element.length; y++) {
             let enemyP = element[y];
             if (enemyP.alive) {
-               ctx.drawImage(enemyP.image, enemyP.x, enemyP.y);
+               ctx.drawImage(enemyP.image, enemyP.x, enemyP.y, enemyImageSizeWidth, enemyImageSizeHeight);
             }
          }
 
       }
 
    }
-   getLeftMostBorder() {
-      return [this.enemy[0][0].x, this.enemy[0][0].y];
-   }
-   getRightMostBorder() {
-      let enemyShipLastRow = this.enemy[this.enemy.length - 1];
-      let enemyShipLastElement = enemyShipLastRow[enemyShipLastRow.length - 1];
+   // getLeftMostBorder() {
+   //    return [this.enemy[0][0].x, this.enemy[0][0].y];
+   // }
+   // getRightMostBorder() {
+   //    let enemyShipLastRow = this.enemy[this.enemy.length - 1];
+   //    let enemyShipLastElement = enemyShipLastRow[enemyShipLastRow.length - 1];
 
-      return [enemyShipLastElement.x + enemyImageSizeWidth, enemyShipLastElement.y + enemyImageSizeHeight];
-   }
+   //    return [enemyShipLastElement.x + enemyImageSizeWidth, enemyShipLastElement.y + enemyImageSizeHeight];
+   // }
    clearEnemyShip(ctx) {
-      // [
-      //    [first,e,e,e,e],
-      //    [e,e,e,e,e],
-      //    [e,e,e,e,last]
-      // ]
-      let firstEnemyCords = this.getLeftMostBorder();
-      let lastEnemyCords = this.getRightMostBorder();
+      // // [
+      // //    [first,e,e,e,e],
+      // //    [e,e,e,e,e],
+      // //    [e,e,e,e,last]
+      // // ]
+      // let firstEnemyCords = this.getLeftMostBorder();
+      // let lastEnemyCords = this.getRightMostBorder();
 
-      ctx.clearRect(firstEnemyCords[0], firstEnemyCords[1], lastEnemyCords[0] - firstEnemyCords[0], lastEnemyCords[1] - firstEnemyCords[1]);
+      // ctx.clearRect(firstEnemyCords[0], firstEnemyCords[1], lastEnemyCords[0] - firstEnemyCords[0], lastEnemyCords[1] - firstEnemyCords[1]);
+      ctx.clearRect(0,0,canvas.width,300);
    }
    moveEnemiesRight() {
       for (let x = 0; x < this.enemy.length; x++) {
@@ -113,7 +123,6 @@ class SpaceCraft {
          for (let y = 0; y < element.length; y++) {
             let enemy = element[y];
             enemy.x += enemyStepSize;
-
          }
       }
    }
@@ -143,6 +152,7 @@ class Enemy {
       this.y = 0;
       this.alive = true;
       this.image = new Image(imgWidth, imgHeight);
+      this.image.style.animationPlayState = 'running';
       this.image.src = imgSrc;
       this.width = enemyImageSizeWidth;
       this.height = enemyImageSizeHeight;
@@ -249,6 +259,8 @@ function initgame() {
    FirstLife=document.getElementById('FirstLifeIMG');
    SecondLife=document.getElementById('SecondLifeIMG');
    ThirdLife=document.getElementById('ThirdLifeIMG');
+   //Init game score bar
+   gscorebar = document.getElementById('CurrentGameScore');
    //Initialize Enemy Bullets
    EnemyBulletFirst = new EnemyBullet(enemyBulletimgsrc);
    EnemyBulletSecond = new EnemyBullet(enemyBulletimgsrc);
@@ -307,6 +319,9 @@ function StopIntervals() {
 
    if(EnemyBulletSecondCollision != null)
    {clearInterval(EnemyBulletSecondCollision);}
+
+   if(TimerInterval != null)
+   {clearInterval(TimerInterval);}
    console.log("Intervals Cleared - StopIntervals");
 } // end function stopTimer
 function VisibleLifeImages()
@@ -315,9 +330,16 @@ function VisibleLifeImages()
    SecondLife.style.visibility="visible";
    ThirdLife.style.visibility="visible";
 }
+function hiddenLifeImages()
+{
+   FirstLife.style.visibility="hidden";
+   SecondLife.style.visibility="hidden";
+   ThirdLife.style.visibility="hidden";
+}
 function setUpGame() {
    VisibleLifeImages();
-   StopIntervals();         
+   StopIntervals();    
+   TimerOn();     
    clearCanvas();
    console.log("clicked start game");
 
@@ -329,6 +351,7 @@ function setUpGame() {
    EnemyBulletFirst.alive = false;
    EnemyBulletSecond.alive = false;
    player.CurrGameScore = 0;
+   gscorebar.innerText = player.CurrGameScore;
    player.hits = 0;
 
    //Speed
@@ -342,7 +365,7 @@ function drawSpaceCraft() {
       for (let y = 0; y < element.length; y++) {
          let enemyP = element[y];
          if(enemyP.alive)
-         {ctx.drawImage(enemyP.image, enemyP.x, enemyP.y);}
+         {ctx.drawImage(enemyP.image, enemyP.x, enemyP.y,enemyImageSizeWidth,enemyImageSizeHeight);}
       }
    }
 }
@@ -641,6 +664,7 @@ function PlayerHitReward(index)
    {
       player.CurrGameScore += 20;
    }
+   gscorebar.innerText = player.CurrGameScore;
 }
 function StopGame()
 {
@@ -648,7 +672,9 @@ function StopGame()
    //ResetGame
    //ClearIntervals
    StopIntervals();
+   TimerOff();
    clearCanvas();
+   hiddenLifeImages();
    UpdateTableScore();
    initgame();
    //Dispatch Event of Updating Table Score
@@ -894,4 +920,44 @@ function logoutgame(){
 function savePlayerStats(){
    //TODO implement this
 }
+function TimerOn()
+{
+   let CurrentDate = new Date();
+   let CurrentDateMinutes = parseInt(CurrentDate.getMinutes());
+   let CurrentDateSeconds = parseInt(CurrentDate.getSeconds());
+   CurrentDate.setMinutes(CurrentDateMinutes+minutes,CurrentDateSeconds+seconds);
+   countDownDate = CurrentDate.getTime();
+   //Refresh Timer each second
+   TimerInterval = setInterval(TimerRefresh,1000);
+}
+function TimerOff()
+{
+   clearInterval(TimerInterval);
+   document.getElementById("timer").innerHTML = 0+"0:0"+0;
+}
+function TimerRefresh()
+{
+   //Current Date
+   now = new Date().getTime();
+   timeLeft = countDownDate - now;
+   minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+   secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+   //Visualizing Better
+   if(secondsLeft<10)
+   {document.getElementById("timer").innerHTML = "0"+minutesLeft +":0"+secondsLeft;}
+   else
+   {document.getElementById("timer").innerHTML = "0"+minutesLeft +":"+secondsLeft;}
+   //Stop Game if Timer == 00:00
+   if(timeLeft < 0)
+   {
+      if(player.CurrGameScore < 100)
+      {window.alert("You can do better");}
+      else
+      {window.alert("Winner !");}
+      player.score += player.CurrGameScore;
+      StopGame();
+   }
+
+}
+
 

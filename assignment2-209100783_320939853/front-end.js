@@ -12,6 +12,9 @@ var CurrUserName;
 var configbtn;
 //
 var ShootingKeyCode;
+//
+var minutes;
+var seconds;
 function initbtns(){
    loginPagebtn = document.getElementById("moveToLoginPage");
    loginPagebtn.addEventListener("click",loginPage,false);
@@ -93,7 +96,16 @@ function ConfigurationPage()
    //Init Configuration Page
    //At this meantime - there's event listener waiting for ConfigurationValidation. Configbtn ^above^
 }
-function ConfigurationValidation()
+function TimerConfValidation()
+{
+   let timerval = document.getElementById("appt").value;
+   minutes = parseInt(timerval.split(":")[0]);
+   seconds = parseInt(timerval.split(":")[1]);
+   if(minutes > 2 || seconds > 59 || minutes == 0 && seconds == 0 || minutes >= 2 && seconds>0)
+   {return false;}
+   return true;
+}
+function ShootingKeyConfigurationValidation()
 {
    let ShootingKey = document.getElementById("ShootingKeyInput").value;
    if(ShootingKey.length == 1)
@@ -104,6 +116,14 @@ function ConfigurationValidation()
       {
          return true;
       }
+   }
+   return false;
+}
+function ConfigurationValidation()
+{
+   if(ShootingKeyConfigurationValidation() && TimerConfValidation())
+   {
+      return true;
    }
    return false;
 }
@@ -125,7 +145,11 @@ function Configuration()
    else
    {
       //Try Again 
-      window.alert("The Shooting Key You Chose is illegal.\nShooting Key Must Be One Key Press, Length Cant Be longer than 1.\n Shooting Key Must be a Letter (a-z) or SpaceBar.\n Please Try Again.");
+      if(!ShootingKeyConfigurationValidation())
+      {
+         window.alert("The Shooting Key You Chose is illegal.\nShooting Key Must Be One Key Press, Length Cant Be longer than 1.\n Shooting Key Must be a Letter (a-z) or SpaceBar.\n Please Try Again.");
+      }
+      else{window.alert("Timer Range You Chose is invalid, please select range between 00:00 to 02:00");}
    }
 }
 function getKeyCode(char) {

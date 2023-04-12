@@ -117,3 +117,12 @@ button#loginbtn{
    grid-row-start: 11;
    grid-row-end:12 ;
 }
+label {
+   display: block;
+   font: 1rem 'Fira Sans', sans-serif;
+}
+input,
+label {
+   margin: 0.4rem 0;
+}
+

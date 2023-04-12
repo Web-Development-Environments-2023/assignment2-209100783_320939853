@@ -51,7 +51,8 @@
                <table id="Timer&LifeTable" style="border: none;">
                   <tr>
                      <th style="width: 150px; border: none; text-align: center;">Life Bar</th>
-                     <th style="width: 500px; border:none;">Timer</th>
+                     <th style="width: 150px; border:none;">Timer</th>
+                     <th style="width: 150px; border:none;">Game Score</th>
                   </tr>
                   <tr>
                      <th style="border: none;">
@@ -64,8 +65,9 @@
                         </table>
                      </th>
                      <th style="border: none;">
-                        <!-- here will be the timer -->
+                        <p id="timer"></p>
                      </th>
+                     <th style="border:none;"><p id="CurrentGameScore"></p></th>
                   </tr>
                </table>
             </div>
@@ -97,6 +99,13 @@
             <h3>When You are ready to proceed -> Click the Button</h3>
             <ul id="Configuration Details">
                <li><input id = "ShootingKeyInput" type="text" value="Enter Shooting Key"></li>
+               <li><label for="appt">Choose Game Time Length</label>
+               <br>
+               <input type="time" id="appt" name="appt" min="00:00" max="02:00" required>
+               <br>
+               <small>Game Time Length must be between 00m:00s to 02m:00s</small>
+               <br>
+               </li>
                <li><button type ="button" id="SaveConfigBtn">Save Configuration</button></li>
             </ul>
          </div>
