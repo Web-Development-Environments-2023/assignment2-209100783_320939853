@@ -109,6 +109,7 @@ div#main{
    height: 100%;
 }
 div#gameButtons{
+   margin-top: 3%;
    grid-row: 3/ span 1;
    grid-column: 2/ span 1;
    text-align: center;
