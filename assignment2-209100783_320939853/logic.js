@@ -245,7 +245,7 @@ class EnemyBullet{
 
 }
 function initgame() {
-
+   // TODO reset all fields ( Life , Player Score Current)
    canvas = document.getElementById("theCanvas");
    ctx = canvas.getContext("2d");
    playerBorder = Math.floor(canvas.height * 0.6)
@@ -893,22 +893,7 @@ function initAdminPlayer(username){
    dispatchEvent(new CustomEvent("returnplayer",{detail:ply}))
 }
 
-// window.addEventListener("load", initgame, false)
-window.addEventListener("defaultUsr",function(e){
-   initAdminPlayer(e.detail)
-},false);
 
-// this is event handler when a user has benn verified
-window.addEventListener("verifeduser",function(e){
-   verifiedUser(e.detail);
-},false);
-
-window.addEventListener("usertable",function(e){
-   createLeadBord(e.detail);
-})
-// window.addEventListener("ShootingKeyConfigured", function(e){
-
-// })
 function logoutgame(){
    savePlayerStats();
    StopIntervals();
@@ -960,4 +945,19 @@ function TimerRefresh()
 
 }
 
+// window.addEventListener("load", initgame, false)
+window.addEventListener("defaultUsr",function(e){
+   initAdminPlayer(e.detail)
+},false);
 
+// this is event handler when a user has benn verified
+window.addEventListener("verifeduser",function(e){
+   verifiedUser(e.detail);
+},false);
+
+window.addEventListener("usertable",function(e){
+   createLeadBord(e.detail);
+})
+// window.addEventListener("ShootingKeyConfigured", function(e){
+
+// })
