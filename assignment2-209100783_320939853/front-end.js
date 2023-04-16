@@ -18,6 +18,9 @@ var ShootingKeyCode;
 //
 var minutes;
 var seconds;
+//
+var volumecontrol
+var volLevel
 function addEventListenersForAllbtns(){
    loginPagebtn = document.getElementById("moveToLoginPage");
    loginPagebtn.addEventListener("click",loginPage,false);
@@ -44,13 +47,19 @@ function addEventListenersForAllbtns(){
    submitBtn = document.getElementById("submitform");
    submitBtn.addEventListener("click",verifyRegisterDetails,false);
 
- 
+   ///////////
+
+   volumecontrol = document.getElementById("volumeControl");
+   volumecontrol.addEventListener("change",changevolume,false);
+   volLevel = document.getElementById("volumeLevel");
+
 }
 function initbtns(){
    menubtns();
    putConstStrings();
    setUpStrings();
    addEventListenersForAllbtns();
+   mutemusic();
    // setup hart images src //
    let images = document.getElementsByClassName("hartimg");
    for (let index = 0; index < images.length; index++) {
@@ -301,6 +310,34 @@ function verifyRegisterDetails(){
    backHome();
 
 
+}
+
+function mutemusic() {
+   let music = document.getElementsByClassName("music");
+   for (let index = 0; index < music.length; index++) {
+      const element = music[index];
+      element.volume = 0;
+      element.pause();
+   }
+   volLevel.textContent  = "Level is 0.0 %";
+   
+}
+function mutemain() {
+   let maimusic = document.getElementById("mainMusic");
+   maimusic.pause();
+   maimusic.currentTime = 0;
+}
+function changevolume(){
+   let musics = document.getElementsByClassName("music");
+   for (let index = 0; index < musics.length; index++) {
+      const element = musics[index];
+      element.volume = volumecontrol.value;
+      // element.play();
+      
+   }
+   document.getElementById("mainMusic").play();
+   setTimeout(mutemain, 1500);
+   volLevel.textContent  = "Level is "+volumecontrol.value + " %";
 }
 // TODO implement this
 function menubtns(){

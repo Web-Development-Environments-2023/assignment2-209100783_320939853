@@ -55,6 +55,7 @@ var countDownDate;
 //Game Score Bar
 var gscorebar;
 
+// Music
 
 var UserTable;
 class SpaceCraft {
@@ -174,6 +175,9 @@ class Player {
       this.score = 0;
       this.CurrGameScore = 0;
       this.username;
+      this.lazerSoud = document.getElementById("shootingUser");
+      this.lazerSoud.volume = 0.5;
+      this.stopLazer();
 
    }
    draw(ctx) {
@@ -191,6 +195,13 @@ class Player {
 
    colisionDetect(obj, objWidth, objHeight) {
 
+   }
+   playLazer(){
+      this.lazerSoud.play();
+   }
+   stopLazer(){
+      this.lazerSoud.pause();
+      this.lazerSoud.currentTime = 0;
    }
 }
 //TODO : rearrange code 
@@ -342,6 +353,7 @@ function setUpGame() {
    StopIntervals();    
    TimerOn();     
    clearCanvas();
+   startMusic();
    console.log("clicked start game");
    // canvas.focus();
    startGameBtn.blur();   
@@ -382,6 +394,7 @@ function generateRandomNumberInInterval(min, max) {
 function ShootDetected() {
    if(bullet.bulletShot==false){
       if ((ShootingKeyCode in keysDown)) {
+         player.playLazer();
          window.clearInterval(ShootInterval);
          console.log("Shoot Detected");
          bullet.bulletShot = true;
@@ -393,6 +406,9 @@ function ShootDetected() {
          BulletMovmentIntervalSpd = 30;
          MovingBullet = window.setInterval(MoveBulletPlayer,BulletMovmentIntervalSpd);
          bulletCollisionInterval = window.setInterval(BulletCollision,bulletCollisionIntervalSpeed);
+         // setTimeout(() => {
+         //    player.stopLazer();
+         // }, 500);
       }
    }
 }
@@ -704,12 +720,22 @@ function PlayerPenaltyHit()
    KillLifeBarImages();
    if(player.hits == 3)
    {
+      stopMusic();
+      let endmusic = document.getElementById("endingMusic")
+      endmusic.play();
       //Adding Current Player Score to Total Game Score
       player.score += player.CurrGameScore;
       console.log("Player Total Score : " + player.score);
       console.log("Playe Current Game Score : " + player.CurrGameScore);
       StopGame();
-      window.alert("You Lost");
+      document.getElementById("gamePage").style.display = "none";
+      document.getElementById("youlostpage").style.display = "grid";
+      setTimeout(() => {
+         stopMusic();
+         document.getElementById("gamePage").style.display = "grid";
+         document.getElementById("youlostpage").style.display = "none";
+         
+      }, 5000);
    }
 }
 function PlayerHit()
@@ -906,6 +932,7 @@ function logoutgame(){
    savePlayerStats();
    StopIntervals();
    clearCanvas();
+   stopMusic();
    document.getElementById("gamePage").style.display = "none";
    document.getElementById("welcomePage").style.display = "grid";
 
@@ -952,7 +979,21 @@ function TimerRefresh()
    }
 
 }
-
+///// music section //////
+function startMusic(){
+   let musics = document.getElementById("mainMusic");
+   musics.play();
+   
+}
+function stopMusic(){
+   let musics = document.getElementsByClassName("music");
+   for (let index = 0; index < musics.length; index++) {
+      const element = musics[index];
+      element.pause();
+      element.currentTime = 0;
+      
+   }
+}
 // window.addEventListener("load", initgame, false)
 window.addEventListener("defaultUsr",function(e){
    initAdminPlayer(e.detail)

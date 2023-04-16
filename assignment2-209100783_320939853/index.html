@@ -10,7 +10,10 @@
 
    </head>
    <body>
-      <audio src="resources/Music/Chiptune10. GORILLA vs HUMAN.mp3" preload="auto" loop autoplay id="mainMusic"></audio>
+      <audio class="music" src="resources/Music/Chiptune10. GORILLA vs HUMAN.mp3" preload="auto" loop autoplay id="mainMusic" ></audio>
+      <audio class="music" src="resources/Music/lazeshot1best.wav" preload="auto"  autoplay id="shootingUser"></audio>
+      <audio class="music" src="resources/Music/endMusic.mp3" preload="auto"  autoplay id="endingMusic"></audio>
+
       <div id="header">
             <div >
                <ul id="menulist">
@@ -166,7 +169,21 @@
                   <br>
                   </li>
                   <li><button type ="button" id="SaveConfigBtn">Save Configuration</button></li>
+                  
                </ul>
+               <ul>
+                  <label for="volumeControl"> Volume Control</label>
+                  <li><input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0"></li>
+                  
+                  <label id="volumeLevel" for="volumeControl"></label>
+               </ul>
+            </div>
+         </div>
+         
+         <div class="container">
+            <div id ="youlostpage" style="display: none;">
+               <h1>You lost</h1>
+
             </div>
          </div>
 
