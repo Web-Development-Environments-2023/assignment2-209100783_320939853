@@ -248,6 +248,7 @@ function initgame() {
    // TODO reset all fields ( Life , Player Score Current)
    canvas = document.getElementById("theCanvas");
    ctx = canvas.getContext("2d");
+   
    playerBorder = Math.floor(canvas.height * 0.6)
   
    enemySpaceCraft = new SpaceCraft(enemyColSize, enemyRowSize, enemyStepSize);
@@ -342,7 +343,8 @@ function setUpGame() {
    TimerOn();     
    clearCanvas();
    console.log("clicked start game");
-
+   canvas.focus();
+   startGameBtn.blur();   
    player.x = generateRandomNumberInInterval(0, canvas.width - 30);
    player.startx = player.x;
    player.y = canvas.height - playerImageSize;
@@ -835,7 +837,13 @@ function registerUser(userTable,username){
    let tempPlayer = new Player();
    tempPlayer.username = username;
    userTable.set(username,tempPlayer)
-   return userTable;
+   // TODO need to dispach event that a user has been registered
+   dispatchEvent(new CustomEvent("getthetableback",{detail:
+      {
+      "userName":username,
+      "userOBJ":tempPlayer
+      }
+   }));
 }
 
 function verifiedUser(obj){
@@ -957,6 +965,12 @@ window.addEventListener("verifeduser",function(e){
 
 window.addEventListener("usertable",function(e){
    createLeadBord(e.detail);
+})
+window.addEventListener("userhasregistered",function(e){
+   let details = e.detail;
+   let usertable = details.userTable;
+   let username = details.userName;
+   registerUser(usertable,username);
 })
 // window.addEventListener("ShootingKeyConfigured", function(e){
 

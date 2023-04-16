@@ -10,105 +10,167 @@
 
    </head>
    <body>
-      <div class="container">
-         <div id="welcomePage">
-            <div id = welcomePagebtns>
-               <button type="button" id ="moveToLoginPage">Login</button>
-               <button type="button" id ="registerbtn">Register</button>
+
+      <div id="header">
+            <div >
+               <ul id="menulist">
+                  <li class="menuli">
+                     <img src="resources/welcomepageBack.gif" width="50" height="50">
+                  </li>
+                  <li class="menuli">
+                     <input type="button" class="menutbtn" id="menubtn1" value="Home">
+                  </li>
+                  <li class="menuli">
+
+                     <input type="button" class="menutbtn" id="menubtn2" value="Login">
+                  </li>
+                  <li class="menuli">
+                     <input type="button" class="menutbtn"  id="menubtn3" value="Register">
+                  </li>
+                  <li class="menuli">
+                     <input type="button" class="menutbtn"  id="menubtn4" value="About us">
+                  </li>
+                  <li class="menuli">
+                     <h1 style="color: red;">209100783</h1>
+                  </li>
+                  <li class="menuli">
+                     <h1 style="color: red;">320939853</h1>
+                  </li>
+               </ul>
             </div>
-         </div>
       </div>
 
-      <div class="container">
-         <div id="loginPage">
-            <div id="logintext">
-               <h1 id="logintext_H">Login</h1>
-            </div>
-            <ul id="loginDetailsList">
-               <li><input id = "username" type = "text" value = "Enter User Name"></li>
-               <li><input id = "password" type = "password" value = "Enter Password"></li>
-               <li><button type="button" id ="loginbtn">Login</button></li>
-            </ul>
-         </div>
-      </div>
-
-   
-
-      <div class="container">
-         <div id="gamePage">
-            <div id="scoreBord">
-               <table id="scoreBordTable">
-                  <tr>
-                     <th scope="col">Player name</th>
-                     <th scope="col">Score</th>
-                  </tr>
-               </table>
-            </div>
-            <div id="gameCanvas">
-               <canvas id = "theCanvas"  width = "1000" height= "600"></canvas>
-            </div>
-            <div id="timerLifeBar">
-               <table id="Timer&LifeTable" style="border: none;">
-                  <tr>
-                     <th style="width: 150px; border: none; text-align: center;">Life Bar</th>
-                     <th style="width: 150px; border:none;">Timer</th>
-                     <th style="width: 150px; border:none;">Game Score</th>
-                  </tr>
-                  <tr>
-                     <th style="border: none;">
-                        <table id="LifeTable" style="border: none;">
-                           <tr style="border: none;">
-                              <th style="width: 150px; border: none;"><img src="resources/heart.gif" id="FirstLifeIMG" width="50" height="50" ></th>
-                              <th style="width: 150px; border: none;"><img src="resources/heart.gif" id="SecondLifeIMG" width="50" height="50" ></th>
-                              <th style="width: 150px; border: none;"><img src="resources/heart.gif" id="ThirdLifeIMG" width="50" height="50" ></th>
-                           </tr>
-                        </table>
-                     </th>
-                     <th style="border: none;">
-                        <p id="timer"></p>
-                     </th>
-                     <th style="border:none;"><p id="CurrentGameScore"></p></th>
-                  </tr>
-               </table>
-            </div>
-            <div id="gameButtons">
-               <input id = "startButton" type = "button" value = "Start Game">
-               <input id = "logoutbtn" type = "button" value = "Logout">
+      <div id="main">
+         
+         <div class="container">
+            <div id="welcomePage">
+               <div id = welcomePagebtns>
+                  <button type="button" id ="moveToLoginPage">Login</button>
+                  <button type="button" id ="registerbtn">Register</button>
+               </div>
             </div>
          </div>
-      </div>
-      <div class="container">
-         <div id="registerPage">
-               <ul id="registerDetailsList">
-                  <li><input id = "usernameInput" type = "text" value = "Enter User Name"></li>
-                  <li><input id = "passwordInput" type = "password" value = "Enter Password"></li>
-                  <li><input id = "passwordVerifyInput" type = "text" value = "Re Enter Password"></li>
-                  <li><input id = "firstNameInput" type = "text" value = " Enter firt name"></li>
-                  <li><input id = "lastNameInput" type = "text" value = "Enter last name"></li>
-                  <li><input id = "emailInput" type = "email" value = "Enter email"></li>
-                  <li><input id = "birthDateInput" type = "text" value = "Choose Date"></li>
+
+         <div class="container">
+            <div id="loginPage">
+               <div id="logintext">
+                  <h1 id="logintext_H">Login</h1>
+               </div>
+               <ul id="loginDetailsList">
+                  <li><input id = "username" type = "text" value = "Enter User Name"></li>
+                  <li><input id = "password" type = "password" value = "Enter Password"></li>
                   <li><button type="button" id ="loginbtn">Login</button></li>
                </ul>
-               <button type="button" id ="registerbtn">Submit</button>
+            </div>
          </div>
-      </div>
-      <div class="container">
-         <div id ="configurationPage" style="display: none";>
-            <h1>Game Configuration</h1>
-            <h2>Here We Will Set Our Configuration Settings Before Game Starts</h2>
-            <h3>When You are ready to proceed -> Click the Button</h3>
-            <ul id="Configuration Details">
-               <li><input id = "ShootingKeyInput" type="text" value="Enter Shooting Key"></li>
-               <li><label for="appt">Choose Game Time Length</label>
-               <br>
-               <input type="time" id="appt" name="appt" min="00:00" max="02:00" required>
-               <br>
-               <small>Game Time Length must be between 00m:00s to 02m:00s</small>
-               <br>
-               </li>
-               <li><button type ="button" id="SaveConfigBtn">Save Configuration</button></li>
-            </ul>
+
+         <div class="container">
+            <div id="gamePage">
+               <div id="scoreBord">
+                  <table id="scoreBordTable">
+                     <tr>
+                        <th scope="col">Player name</th>
+                        <th scope="col">Score</th>
+                     </tr>
+                  </table>
+               </div>
+               <div id="gameCanvas">
+                  <canvas id = "theCanvas"  width = "1000" height= "600"></canvas>
+               </div>
+               <div id="timerLifeBar">
+                  <table id="Timer&LifeTable">
+                     <tr>
+                        <th class="lifeth">Life Bar</th>
+                        <th class="lifeth">Timer</th>
+                        <th class="lifeth">Game Score</th>
+                     </tr>
+                     <tr>
+                        <th id="lifeTH">
+                           <table id="LifeTable" >
+                              <tr>
+                                 <th class="lifeth"><img class="hartimg" id="FirstLifeIMG" ></th>
+                                 <th class="lifeth"><img class="hartimg" id="SecondLifeIMG" ></th>
+                                 <th class="lifeth"><img class="hartimg" id="ThirdLifeIMG" ></th>
+                              </tr>
+                           </table>
+                        </th>
+                        <th style="border: none;">
+                           <p id="timer"></p>
+                        </th>
+                        <th style="border:none;"><p id="CurrentGameScore"></p></th>
+                     </tr>
+                  </table>
+               </div>
+               <div id="gameButtons">
+                  <input id = "startButton" type = "button" value = "Start Game">
+                  <input id = "logoutbtn" type = "button" value = "Logout">
+               </div>
+            </div>
          </div>
-      </div>
+
+         <div class="container">
+            <div id="registerPage">
+                  <ul id="registerDetailsList">
+                     <li class="registerli">
+                        <label class="labelregister" for="usernameInput">User Name</label>
+                        <input id = "usernameInput" type = "text"  style="width: 100%;" required>
+                     </li>
+                     <li class="registerli">
+                        <label class="labelregister" for="passwordInput">Password</label>                        
+                        <input id = "passwordInput" type = "password" style="width: 100%;"required>
+                     </li>
+                     <li class="registerli">
+                        <label class="labelregister" for="passwordVerifyInput">Verify Password</label>
+                        <input id = "passwordVerifyInput" type = "text" style="width: 100%;" required>
+                     </li>
+                     <li class="registerli">
+                        <label class="labelregister" for="firstNameInput">First Name</label>
+                        <input id = "firstNameInput" type = "text"       style="width: 100%;" required>
+                     </li>
+                     <li class="registerli">
+                        <label class="labelregister" for="lastNameInput">Last Name</label>
+                        <input id = "lastNameInput" type = "text"        style="width: 100%;" required>
+                     </li>
+                     <li class="registerli">
+                        <label class="labelregister" for="emailInput">eMail</label>
+                        <input id = "emailInput" type = "email" style="width: 100%;" required>
+                     </li>
+                     <li class="registerli">
+                        <label class="labelregister" for="birthDateInput">Birth Date</label>
+                        <input id = "birthDateInput" type = "date" max="" style="width: 100%;" required>
+                     </li>
+                     <li class="registerli"></li>
+                  
+
+                     <li class="registerli"><input id = "submitform" type = "button" value = "Submit Form"           style="width: 100%;"></li>
+                     <!-- <li class="registerli"><button type="button" id ="loginbtn">Login</button></li> -->
+                  </ul>
+                  <div id="backhome">
+                     <button type="button" id ="BackHomebtn">Back Home</button>
+                  </div>
+            </div>
+         </div>
+
+         <div class="container">
+            <div id ="configurationPage" style="display: none";>
+               <h1>Game Configuration</h1>
+               <h2>Here We Will Set Our Configuration Settings Before Game Starts</h2>
+               <h3>When You are ready to proceed -> Click the Button</h3>
+               <ul id="ConfigurationDetails">
+                  <li><input id = "ShootingKeyInput" type="text" value="Enter Shooting Key"></li>
+                  <li><label for="appt">Choose Game Time Length</label>
+                  <br>
+                  <input type="time" id="appt" name="appt" min="00:00" max="02:00" required>
+                  <br>
+                  <small>Game Time Length must be between 00m:00s to 02m:00s</small>
+                  <br>
+                  </li>
+                  <li><button type ="button" id="SaveConfigBtn">Save Configuration</button></li>
+               </ul>
+            </div>
+         </div>
+
+      <div>
+
    </body>
 </html>

@@ -1,7 +1,12 @@
+@font-face {
+   font-family: "mainfont";
+   src: url("resources/Fonts/8bitFont.ttf");
+}
 div.container{
-   padding: 10px;
-   width: 95vw;
-   height: 95vh;
+   font-family: "mainfont";
+   /* padding: 10px; */
+   width: 100%;
+   height: 100%;
    margin: auto;
    display: contents;
    
@@ -56,8 +61,8 @@ h1#logintext_H{
 div#gamePage{
    /* display: grid; */
    margin: auto;
-   grid-template-columns: 1fr 1fr 1fr;
-   grid-template-rows: 1fr 1fr 1fr;
+   grid-template-columns: 1fr 3fr 1fr;
+   grid-template-rows: 1fr 8fr 1fr;
    width: 100%;
    height: 100%;
    display: none;
@@ -69,6 +74,39 @@ div#gameCanvas{
    height: 100%;
    background-image:url("resources/welcomepageBack.gif")
 
+}
+body{
+   font-family: "mainfont";
+   padding: 10px;
+   
+   margin: auto;
+   display: grid;
+   grid-template-columns: 1fr;
+   grid-template-rows: 1fr 50fr;
+   grid-row: 1/ span 2;
+   grid-column: 1/ span 1;
+   width: 95vh;
+   width: 95vw;
+ 
+}
+
+div#header{
+   font-family: "mainfont";
+
+   margin: auto;
+   grid-row: 1/ span 1;
+   grid-column: 1/ span 1;
+   width: 100%;
+   height: 100%;
+}
+div#main{
+   font-family: "mainfont";
+
+   margin: auto;
+   grid-row: 2/ span 1;
+   grid-column: 1/ span 1;
+   width: 100%;
+   height: 100%;
 }
 div#gameButtons{
    grid-row: 3/ span 1;
@@ -88,27 +126,108 @@ div#scoreBord{
 div#timerLifeBar
 {
    /*Not sure about grid-row */
-   grid-row : 1/ span 3;
-   grid-column: 2/ span 1;
+   grid-row : 1/ span 1;
+   grid-column: 1/ span 3;
    text-align: center;
 }
 div#registerPage{
    display: none;
    margin: auto;
    grid-template-columns: 1fr 1fr 1fr ;
-   grid-template-rows: 2fr 4fr 2fr;
+   grid-template-rows: 4fr 1fr;
    width: 100%;
    height: 100%;
    background-image: url("resources/welcomepageBack.gif");
 }
-ul#registerDetailsList{
+div#backhome{
    grid-row: 2/ span 1;
-   grid-column: 2/ span1;
+   grid-column: 2/ span 1;
    width: 100%;
    height: 100%;
+   text-align: center;
 }
 
+li.registerli{
+   list-style-type: none;
+   padding-top: 1%;
+   
+
+}
+ul#registerDetailsList{
+   grid-row: 1/ span 1;
+   grid-column: 2/ span 1;
+   width: 100%;
+   height: 100%;
+   margin: auto;
+   text-align: center;
+   padding: 0%;
+   font-size: xx-large;
+}
+button#BackHomebtn{
+   width: 100%;
+   margin-top: 10%;
+}
+label.labelregister{
+   color: aliceblue;
+}
+ul#menulist{
+   display: flex;
+   gap: 5%;
+   list-style: none;
+   text-align: center;
+   background-color: black;
+}
+input.menutbtn{
+   width: 100%;
+   height: 100%;
+   background-color: aqua;
+   
+}
 th,th,td{
    border: 2px solid black;
    padding: 3px;
+}
+div#configurationPage{
+   text-align: center;
+   
+}
+ul#ConfigurationDetails{
+   list-style: none;
+}
+button{
+   font-family: "mainfont";
+
+}
+input{
+   font-family: "mainfont";
+
+}
+th#lifeth{
+   font-family: "mainfont";
+   border: none;
+   width: 50%;
+   height: 5%;
+}
+img.hartimg{
+
+   width: 15%;
+   height:15%;
+}
+table#LifeTable{
+   font-family: "mainfont";
+
+   border: none;
+}
+th.lifeTH{
+   font-family: "mainfont";
+
+   border: none;
+}
+li.menuli{
+   font-family: "mainfont";
+
+   width: max-content;
+   height: auto;
+   text-align: center;
+   
 }
