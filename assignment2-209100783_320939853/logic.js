@@ -343,7 +343,7 @@ function setUpGame() {
    TimerOn();     
    clearCanvas();
    console.log("clicked start game");
-   canvas.focus();
+   // canvas.focus();
    startGameBtn.blur();   
    player.x = generateRandomNumberInInterval(0, canvas.width - 30);
    player.startx = player.x;
