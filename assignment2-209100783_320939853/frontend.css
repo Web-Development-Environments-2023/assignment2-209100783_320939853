@@ -226,11 +226,9 @@ th.lifeTH{
 }
 li.menuli{
    font-family: "mainfont";
-
    width: max-content;
    height: auto;
    text-align: center;
-   
 }
 div#youlostpage{
    width: 100%;
