@@ -21,7 +21,7 @@
 ### Download
 
 # Music
-Sure, here is the paragraph about how we sampled someone's 8-bit song and made our own unique music for the game of Chicken Invaders, written in Markup Language:# How we sampled someone's 8-bit song and made our own unique music for the game of Chicken Invaders
+# How we sampled someone's 8-bit song and made our own unique music for the game of Chicken Invaders
 
 We were inspired by the classic arcade game Chicken Invaders, and wanted to create a new version of the game with our own unique sound. We sampled a portion of an 8-bit song from another artist, and used it as the basis for our own music. We added new instruments, effects, and arrangements to create a new and exciting soundtrack. We believe that our music adds to the overall experience of the game, and makes it more fun and engaging.
 
