@@ -154,30 +154,32 @@
             </div>
          </div>
          <div class="container">
-            <div id ="configurationPage" style="display: none">
-               <h1>Game Configuration</h1>
-               <h2>Here We Will Set Our Configuration Settings Before Game Starts</h2>
-               <h3>When You are ready to proceed -> Click the Button</h3>
-               <ul id="Configuration Details">
-                  <li><input id = "ShootingKeyInput" type="text" value="Enter Shooting Key"></li>
-                  <li><label for="appt">Choose Game Time Length</label>
-                  <br>
-                  <input type="range" id="appt" name="appt" min="120" max="600" required>
-                  <p>Game Time Length: <output id="value"></output></p>
-                  <!-- <input type="time" id="appt" name="appt" min="00:00" max="02:00" required> -->
-                  <br>
-                  <small>Game Time Length must be minimum 02m:00s</small>
-                  <br>
-                  </li>
-                  <li><button type ="button" id="SaveConfigBtn">Save Configuration</button></li>
+            <div id ="configlocation">
+               <div id="configurationPage">
+                  <h1>Game Configuration</h1>
+                  <h2>Here We Will Set Our Configuration Settings Before Game Starts</h2>
+                  <h3>When You are ready to proceed -> Click the Button</h3>
+                  <ul id="Configuration Details">
+                     <li><input id = "ShootingKeyInput" type="text" value="Enter Shooting Key"></li>
+                     <li><label for="appt">Choose Game Time Length</label>
+                     <br>
+                     <input type="range" id="appt" name="appt" min="120" max="600" required>
+                     <p>Game Time Length: <output id="value"></output></p>
+                     <!-- <input type="time" id="appt" name="appt" min="00:00" max="02:00" required> -->
+                     <br>
+                     <small>Game Time Length must be minimum 02m:00s</small>
+                     <br>
+                     </li>
+                     <li><button type ="button" id="SaveConfigBtn">Start Game</button></li>
 
-               </ul>
-               <ul>
-                  <label for="volumeControl"> Volume Control</label>
-                  <li><input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0"></li>
-                  
-                  <label id="volumeLevel" for="volumeControl"></label>
-               </ul>
+                  </ul>
+                  <ul>
+                     <label for="volumeControl"> Volume Control</label>
+                     <li><input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0"></li>
+                     
+                     <label id="volumeLevel" for="volumeControl"></label>
+                  </ul>
+               </div>
             </div>
          </div>
          

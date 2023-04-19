@@ -177,6 +177,7 @@ class Player {
       this.username;
       this.lazerSoud = document.getElementById("shootingUser");
       this.lazerSoud.volume = 0.5;
+      this.playerGames = [];
       this.stopLazer();
 
    }
