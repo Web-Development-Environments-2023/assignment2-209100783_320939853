@@ -93,7 +93,7 @@
          </div>
       </div>
       <div class="container">
-         <div id ="configurationPage" style="display: none";>
+         <div id ="configurationPage" style="display: none">
             <h1>Game Configuration</h1>
             <h2>Here We Will Set Our Configuration Settings Before Game Starts</h2>
             <h3>When You are ready to proceed -> Click the Button</h3>
@@ -101,9 +101,11 @@
                <li><input id = "ShootingKeyInput" type="text" value="Enter Shooting Key"></li>
                <li><label for="appt">Choose Game Time Length</label>
                <br>
-               <input type="time" id="appt" name="appt" min="00:00" max="02:00" required>
+               <input type="range" id="appt" name="appt" min="120" max="600" required>
+               <p>Game Time Length: <output id="value"></output></p>
+               <!-- <input type="time" id="appt" name="appt" min="00:00" max="02:00" required> -->
                <br>
-               <small>Game Time Length must be between 00m:00s to 02m:00s</small>
+               <small>Game Time Length must be minimum 02m:00s</small>
                <br>
                </li>
                <li><button type ="button" id="SaveConfigBtn">Save Configuration</button></li>

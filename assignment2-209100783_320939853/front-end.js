@@ -15,6 +15,9 @@ var ShootingKeyCode;
 //
 var minutes;
 var seconds;
+//
+var TimerVal;
+var TimerInput;
 function initbtns(){
    loginPagebtn = document.getElementById("moveToLoginPage");
    loginPagebtn.addEventListener("click",loginPage,false);
@@ -88,22 +91,33 @@ function validUser(){
    ConfigurationPage();
    console.log("user has been valideate and game has been init");
 }
+function PrintTimerBeautifully(TimerInput)
+{
+   let TimerIntVal = parseInt(TimerInput.value)
+   console.log(TimerIntVal)
+   minutes = Math.floor(TimerIntVal/60);
+   seconds = TimerIntVal % 60 
+   if(minutes != 10)
+   {
+      if(seconds > 9)
+      {TimerVal.value = "0"+minutes+":"+seconds}
+      else{TimerVal.value = "0"+minutes+":0"+seconds}
+   }
+   else{TimerVal.value = "10:00"}
+   
+}
 function ConfigurationPage()
 {
    //Remove Login Page
    document.getElementById("configurationPage").style.display = "grid";
    document.getElementById("loginPage").style.display = "none"
+   TimerVal = document.getElementById("value")
+   TimerInput = document.getElementById("appt")
+   PrintTimerBeautifully(TimerInput)
+   TimerInput.addEventListener("input", (event) => {
+   PrintTimerBeautifully(TimerInput)})
    //Init Configuration Page
    //At this meantime - there's event listener waiting for ConfigurationValidation. Configbtn ^above^
-}
-function TimerConfValidation()
-{
-   let timerval = document.getElementById("appt").value;
-   minutes = parseInt(timerval.split(":")[0]);
-   seconds = parseInt(timerval.split(":")[1]);
-   if(minutes > 2 || seconds > 59 || minutes == 0 && seconds == 0 || minutes >= 2 && seconds>0)
-   {return false;}
-   return true;
 }
 function ShootingKeyConfigurationValidation()
 {
@@ -121,7 +135,7 @@ function ShootingKeyConfigurationValidation()
 }
 function ConfigurationValidation()
 {
-   if(ShootingKeyConfigurationValidation() && TimerConfValidation())
+   if(ShootingKeyConfigurationValidation())
    {
       return true;
    }
@@ -149,7 +163,6 @@ function Configuration()
       {
          window.alert("The Shooting Key You Chose is illegal.\nShooting Key Must Be One Key Press, Length Cant Be longer than 1.\n Shooting Key Must be a Letter (a-z) or SpaceBar.\n Please Try Again.");
       }
-      else{window.alert("Timer Range You Chose is invalid, please select range between 00:00 to 02:00");}
    }
 }
 function getKeyCode(char) {
@@ -184,3 +197,6 @@ window.addEventListener("load",initbtns,false);
 window.addEventListener("getusertable",function(){
    dispatchEvent(new CustomEvent("usertable",{detail:userToRegisteredPlayer}));
 });
+
+
+
