@@ -20,5 +20,4 @@
 
 ### Download
 
-[music]
-[https://soundcloud.com/harayuu/tracks]
+[music](https://soundcloud.com/harayuu/tracks)
