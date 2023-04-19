@@ -137,7 +137,7 @@ function PrintTimerBeautifully(TimerInput)
 function ConfigurationPage()
 {
    //Remove Login Page
-   document.getElementById("configurationPage").style.display = "grid";
+   document.getElementById("configlocation").style.display = "grid";
    document.getElementById("loginPage").style.display = "none"
    TimerVal = document.getElementById("value")
    TimerInput = document.getElementById("appt")
@@ -181,7 +181,7 @@ function Configuration()
          "username":CurrUserName
          }
       }));
-      document.getElementById("configurationPage").style.display = "none";
+      document.getElementById("configlocation").style.display = "none";
       document.getElementById("gamePage").style.display = "grid";
    }
    else

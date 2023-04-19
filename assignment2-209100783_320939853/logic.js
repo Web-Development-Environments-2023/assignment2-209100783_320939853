@@ -350,6 +350,7 @@ function hiddenLifeImages()
    ThirdLife.style.visibility="hidden";
 }
 function setUpGame() {
+   stopMusic();
    VisibleLifeImages();
    StopIntervals();    
    TimerOn();     
@@ -696,6 +697,7 @@ function StopGame()
    hiddenLifeImages();
    UpdateTableScore();
    initgame();
+   stopMusic();
    //Dispatch Event of Updating Table Score
 }
 function KillLifeBarImages()
