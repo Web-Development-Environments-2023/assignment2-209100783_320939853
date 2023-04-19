@@ -20,4 +20,18 @@
 
 ### Download
 
-[music](https://soundcloud.com/harayuu/tracks)
+# Music
+Sure, here is the paragraph about how we sampled someone's 8-bit song and made our own unique music for the game of Chicken Invaders, written in Markup Language:# How we sampled someone's 8-bit song and made our own unique music for the game of Chicken Invaders
+
+We were inspired by the classic arcade game Chicken Invaders, and wanted to create a new version of the game with our own unique sound. We sampled a portion of an 8-bit song from another artist, and used it as the basis for our own music. We added new instruments, effects, and arrangements to create a new and exciting soundtrack. We believe that our music adds to the overall experience of the game, and makes it more fun and engaging.
+
+### Here are some additional details about our process:
+
+  * We found an 8-bit song that we liked the sound of.
+  * We sampled a portion of the song and imported it into our music production software.
+  * We added new instruments, effects, and arrangements to the sample.
+  * We mixed and mastered the music to create a final product that we were happy with.
+
+### We believe that our music is a unique and creative addition to the game of Chicken Invaders. We hope you enjoy it!
+
+[Artist](https://soundcloud.com/harayuu/tracks)
