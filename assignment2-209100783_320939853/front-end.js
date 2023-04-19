@@ -1,11 +1,14 @@
 const usersTablePasswords = new Map();
 const userToRegisteredPlayer = new Map();
+const strings = new Map();
 var loadDefaultUserEvent;
 var usernameInput;
 var passwordInput;
 var loginPagebtn;
 var registerPagebtn;
 var loginbtn;
+var backHomebtn;
+var submitBtn ;
 //
 var CurrUserName;
 //
@@ -16,9 +19,12 @@ var ShootingKeyCode;
 var minutes;
 var seconds;
 //
+var volumecontrol
+var volLevel
+//
 var TimerVal;
 var TimerInput;
-function initbtns(){
+function addEventListenersForAllbtns(){
    loginPagebtn = document.getElementById("moveToLoginPage");
    loginPagebtn.addEventListener("click",loginPage,false);
 
@@ -35,14 +41,37 @@ function initbtns(){
    loginbtn = document.getElementById("loginbtn");
    loginbtn.addEventListener("click",verifyCredentials,false);
 
+   backHomebtn = document.getElementById("BackHomebtn");
+   backHomebtn.addEventListener("click",backHome,false);
+
    configbtn = document.getElementById("SaveConfigBtn");
    configbtn.addEventListener("click",Configuration, false);
 
-   
-   
+   submitBtn = document.getElementById("submitform");
+   submitBtn.addEventListener("click",verifyRegisterDetails,false);
 
+   ///////////
+
+   volumecontrol = document.getElementById("volumeControl");
+   volumecontrol.addEventListener("change",changevolume,false);
+   volLevel = document.getElementById("volumeLevel");
+
+}
+function initbtns(){
+   menubtns();
+   putConstStrings();
+   setUpStrings();
+   addEventListenersForAllbtns();
+   mutemusic();
+   // setup hart images src //
+   let images = document.getElementsByClassName("hartimg");
+   for (let index = 0; index < images.length; index++) {
+      const element = images[index];
+      element.src = "resources/heart.gif";
+   }
 
    usersTablePasswords.set("p","testuser");
+   
    
    initDefaultPlayer("p");
 
@@ -63,6 +92,7 @@ function clearLogintbtnText(){
 function registerPage(){
    document.getElementById("welcomePage").style.display = "none";
    document.getElementById("registerPage").style.display = "grid";
+   setDateInputDefault();
 }
 
 function verifyCredentials(){
@@ -77,12 +107,10 @@ function verifyCredentials(){
          
       }
       else{
-         // TODO implement this
          notValidUser();
       }
    }
    else{
-      // TODO implement this
       notValidUser();
    }
 }
@@ -173,6 +201,8 @@ function getKeyCode(char) {
    return keyCode;
  }
 function notValidUser(){
+   alert("the password or the username isn't valid\nPlease try again");
+
 }
 
 function setUserInTable(player){
@@ -187,6 +217,156 @@ function initDefaultPlayer(usename){
    // this function only ivoked to the default user 
    dispatchEvent(new CustomEvent("defaultUsr",{ detail:usename}));
 }
+function backHome(){
+   setUpStrings();
+   document.getElementById("registerPage").style.display = "none";
+   document.getElementById("welcomePage").style.display = "grid";
+
+
+}
+function setUpStrings(){
+   let inputs = ["usernameInput","passwordInput","passwordVerifyInput","firstNameInput","lastNameInput","emailInput","birthDateInput"]
+   for (let index = 0; index < inputs.length; index++) {
+      const element = inputs[index];
+      document.getElementById(element).value = strings.get(element);
+   }
+}
+
+function putConstStrings(){
+   strings.set("usernameInput","Enter User Name")
+   strings.set("passwordInput","12345")
+   strings.set("passwordVerifyInput","12345")
+   strings.set("firstNameInput","Enter first name")
+   strings.set("lastNameInput","Enter last name")
+   strings.set("emailInput","Enter email")
+}
+function setDateInputDefault(){
+   const currentDate = new Date();
+
+   // Format the date as "YYYY-MM-DD"
+   const year = currentDate.getFullYear();
+   const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+   const day = String(currentDate.getDate()).padStart(2, '0');
+   const formattedDate = `${year}-${month}-${day}`;
+ 
+   // Set the default value of the input type date
+   let dateInput = document.getElementById("birthDateInput");
+   dateInput.value = formattedDate;
+
+   dateInput.max = formattedDate;
+
+}
+
+
+
+function verifyRegisterDetails(){
+   let inputOK = true;
+   let listNotValidInputs = [] ;
+   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+   const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$/;
+   const nameRegex = /^[^0-9]*$/;
+   
+   let username = document.getElementById("usernameInput").value;
+   let password = document.getElementById("passwordInput").value;
+   let passworVerify = document.getElementById("passwordVerifyInput").value;
+   let firstName = document.getElementById("firstNameInput").value;
+   let lastName = document.getElementById("lastNameInput").value;
+   let email = document.getElementById("emailInput").value;
+   
+   if (usersTablePasswords.has(username)) {
+      inputOK = false;
+      listNotValidInputs.push("This username already exist as a player");
+   }
+   if (!passwordRegex.test(password)){
+      inputOK = false;
+      listNotValidInputs.push("password isn't valid  Shuld contain Numbers And [A-Z][a-z] characters at least 8 long");
+   }
+   if (passworVerify != password){
+      inputOK = false;
+      listNotValidInputs.push("Passwords doesn't match");
+   }
+   if (!nameRegex.test(firstName)){
+      inputOK = false;
+      listNotValidInputs.push("Firts Name Sholdn't contain any numbers");
+   }
+   
+   if (!nameRegex.test(lastName)){
+      inputOK = false;
+      listNotValidInputs.push("Last Name Sholdn't contain any numbers");
+
+   }
+   if (!emailRegex.test(email)){
+      inputOK = false;
+      listNotValidInputs.push("This is not a valid email address");
+   }
+
+   
+   if(!inputOK){
+      let message = "";
+      for (let index = 0; index < listNotValidInputs.length; index++) {
+         const element = listNotValidInputs[index];
+         message+= element+"\n"
+         
+      }
+      alert("One or many inputs are wrong :\n"+message)
+      
+      return false;
+   }
+   usersTablePasswords.set(username,password);
+   dispatchEvent(new CustomEvent("userhasregistered",{detail:
+      {
+      "userTable":userToRegisteredPlayer,
+      "userName":username
+      }
+   }));
+   alert("Sucessfully Registered\nNow login with the username and the password to start the game");
+   backHome();
+
+
+}
+
+function mutemusic() {
+   let music = document.getElementsByClassName("music");
+   for (let index = 0; index < music.length; index++) {
+      const element = music[index];
+      element.volume = 0;
+      element.pause();
+   }
+   volLevel.textContent  = "Level is 0.0 %";
+   
+}
+function mutemain() {
+   let maimusic = document.getElementById("mainMusic");
+   maimusic.pause();
+   maimusic.currentTime = 0;
+}
+function changevolume(){
+   let musics = document.getElementsByClassName("music");
+   for (let index = 0; index < musics.length; index++) {
+      const element = musics[index];
+      element.volume = volumecontrol.value;
+      // element.play();
+      
+   }
+   document.getElementById("mainMusic").play();
+   setTimeout(mutemain, 1500);
+   volLevel.textContent  = "Level is "+volumecontrol.value + " %";
+}
+// TODO implement this
+function menubtns(){
+  document.getElementById("menubtn1").addEventListener("click",function (e){
+   alert("need to implement this back to home ");
+  },false)
+  document.getElementById("menubtn2").addEventListener("click",function (e){
+   alert("need to implement login");
+  },false)
+  document.getElementById("menubtn3").addEventListener("click",function (e){
+   alert("need to implement this register ");
+  },false)
+  document.getElementById("menubtn4").addEventListener("click",function (e){
+   alert("need to implement this about us ");
+  },false)
+}
 //this is event handel that handel return of a new player to set in the table usually when new user register
 window.addEventListener("returnplayer",function(e){
    setUserInTable(e.detail)
@@ -197,6 +377,7 @@ window.addEventListener("load",initbtns,false);
 window.addEventListener("getusertable",function(){
    dispatchEvent(new CustomEvent("usertable",{detail:userToRegisteredPlayer}));
 });
-
-
-
+window.addEventListener("getthetableback",function(e){
+   let details = e.detail;
+   userToRegisteredPlayer.set(details.userName,details.userOBJ);
+});
