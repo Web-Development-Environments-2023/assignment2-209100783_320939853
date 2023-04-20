@@ -299,3 +299,10 @@ p.footerTags{
    margin: 0%;
    padding: 0%;
 }
+#Close_Modal {
+   position: absolute;
+   top: 0;
+   right: 0;
+ }
+#About_Modal {padding: 0;}
+#Modal_DIV {padding: 16px;}

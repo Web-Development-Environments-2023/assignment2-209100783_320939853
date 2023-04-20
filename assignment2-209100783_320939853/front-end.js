@@ -24,6 +24,7 @@ var volLevel
 //
 var TimerVal;
 var TimerInput;
+//
 function addEventListenersForAllbtns(){
    loginPagebtn = document.getElementById("moveToLoginPage");
    loginPagebtn.addEventListener("click",loginPage,false);
@@ -364,9 +365,23 @@ function menubtns(){
    alert("need to implement this register ");
   },false)
   document.getElementById("menubtn4").addEventListener("click",function (e){
-   alert("need to implement this about us ");
+   Modal_About();
   },false)
 }
+function Modal_About()
+{
+   let Modal_Window = document.getElementById("About_Modal")
+   Modal_Window.showModal();
+   //Event Listeners For Closing Window (ESC / X / Mouse Click)
+   document.getElementById("Close_Modal").addEventListener("click",function(e){
+      Modal_Window.close();})
+   document.getElementById("Close_Modal").addEventListener("keydown",function(e){if (e.keyCode === 27){
+      Modal_Window.close();}})
+   //This is Hard Coded Because I'm Moron - So If We're Interested in changing the content -> Make Sure You're Giving each object id ( In Modal ) and enter it here to this long IF. 
+   Modal_Window.addEventListener('click', function(e){
+      if (e.target.id !== 'Modal_DIV' && e.target.id!=='menubtn4' && e.target.id !=='Dialog_Header' && e.target.id !=='DialogH2' && e.target.id !== 'DIALOGMAIN') {
+         Modal_Window.close();}})
+}   
 //this is event handel that handel return of a new player to set in the table usually when new user register
 window.addEventListener("returnplayer",function(e){
    setUserInTable(e.detail)
