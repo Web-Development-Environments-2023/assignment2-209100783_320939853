@@ -25,6 +25,7 @@ var volLevel
 var TimerVal;
 var TimerInput;
 //
+var CurrentlyDisplayed =document.getElementById("welcomePage"); ;
 function addEventListenersForAllbtns(){
    loginPagebtn = document.getElementById("moveToLoginPage");
    loginPagebtn.addEventListener("click",loginPage,false);
@@ -72,8 +73,6 @@ function initbtns(){
    }
 
    usersTablePasswords.set("p","testuser");
-   
-   
    initDefaultPlayer("p");
 
 }
@@ -82,6 +81,7 @@ function loginPage(){
    let pastPage = document.getElementById("welcomePage");
    pastPage.style.display = "none";
    page.style.display = "grid";
+   CurrentlyDisplayed = page;
 }
 function clearPasswordbtnText(){
    passwordInput.value = "";
@@ -93,6 +93,7 @@ function clearLogintbtnText(){
 function registerPage(){
    document.getElementById("welcomePage").style.display = "none";
    document.getElementById("registerPage").style.display = "grid";
+   CurrentlyDisplayed = document.getElementById("registerPage");
    setDateInputDefault();
 }
 
@@ -137,9 +138,15 @@ function PrintTimerBeautifully(TimerInput)
 }
 function ConfigurationPage()
 {
+   //Restore Configuration Input Values to Original
+   document.getElementById("ShootingKeyInput").value = "Enter Shooting Key"
+   document.getElementById("appt").value = '360';
+   volumecontrol.value = "0"
+   volLevel.textContent  = "Level is 0.0 %";
    //Remove Login Page
    document.getElementById("configlocation").style.display = "grid";
    document.getElementById("loginPage").style.display = "none"
+   CurrentlyDisplayed = document.getElementById("configlocation");
    TimerVal = document.getElementById("value")
    TimerInput = document.getElementById("appt")
    PrintTimerBeautifully(TimerInput)
@@ -184,6 +191,7 @@ function Configuration()
       }));
       document.getElementById("configlocation").style.display = "none";
       document.getElementById("gamePage").style.display = "grid";
+      CurrentlyDisplayed = document.getElementById("gamePage");
    }
    else
    {
@@ -203,7 +211,6 @@ function getKeyCode(char) {
  }
 function notValidUser(){
    alert("the password or the username isn't valid\nPlease try again");
-
 }
 
 function setUserInTable(player){
@@ -218,12 +225,31 @@ function initDefaultPlayer(usename){
    // this function only ivoked to the default user 
    dispatchEvent(new CustomEvent("defaultUsr",{ detail:usename}));
 }
+function Login_Button()
+{
+   CurrentlyDisplayed.style.display = "none";
+   logoutgame();
+   loginPage();
+}
+function Home_Button()
+{
+   document.getElementById("welcomePage").style.display = "grid";
+   if(CurrentlyDisplayed != null){CurrentlyDisplayed.style.display = 'none';}
+   CurrentlyDisplayed = document.getElementById("welcomePage");
+   logoutgame();
+}
+function Register_Button()
+{
+   if(CurrentlyDisplayed != null){CurrentlyDisplayed.style.display = 'none';}
+   logoutgame();
+   registerPage();
+}
 function backHome(){
    setUpStrings();
    document.getElementById("registerPage").style.display = "none";
+   CurrentlyDisplayed.style.display = "none";
    document.getElementById("welcomePage").style.display = "grid";
-
-
+   CurrentlyDisplayed = document.getElementById("welcomePage");
 }
 function setUpStrings(){
    let inputs = ["usernameInput","passwordInput","passwordVerifyInput","firstNameInput","lastNameInput","emailInput","birthDateInput"]
@@ -356,13 +382,13 @@ function changevolume(){
 // TODO implement this
 function menubtns(){
   document.getElementById("menubtn1").addEventListener("click",function (e){
-   alert("need to implement this back to home ");
+   Home_Button();
   },false)
   document.getElementById("menubtn2").addEventListener("click",function (e){
-   alert("need to implement login");
+   Login_Button();
   },false)
   document.getElementById("menubtn3").addEventListener("click",function (e){
-   alert("need to implement this register ");
+   Register_Button();
   },false)
   document.getElementById("menubtn4").addEventListener("click",function (e){
    Modal_About();
