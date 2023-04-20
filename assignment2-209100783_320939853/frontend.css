@@ -255,8 +255,9 @@ div#youlostpage{
    width: 100%;
    height: 100%;
    display: none;
-   grid-row: 1/ span 3;
-   grid-column: 1/ span 3;
+   grid-template-columns: 1fr ;
+   grid-template-rows: 4fr 2fr 0.5fr;
+   text-align: center;
 }
 ul{
    list-style: none;
@@ -298,6 +299,31 @@ img#imgmenulist{
 p.footerTags{
    margin: 0%;
    padding: 0%;
+}
+img#imageliyoulostimage{
+   background-image: url("resources/youloseimg1.png");
+   background-size: cover;
+   width: 50%;
+   height: 50%;
+   padding-bottom: 50px;
+}
+div#imagecpmtaineryoulost{
+   width: 100%;
+   height: 100%;
+   grid-row: 1/ span 1;
+   grid-column: 1/ span 1;
+}
+div#youloosedivlist{
+   width: 50%;
+   height: 50%;
+   grid-row: 2/ span 1;
+   grid-column: 1/ span 1;
+}
+div#btnyoulostbtn{
+   width: 100%;
+   height: 100%;
+   grid-row: 3/ span 1;
+   grid-column: 1/ span 1;
 }
 #Close_Modal {
    position: absolute;

@@ -177,7 +177,8 @@ class Player {
       this.username;
       this.lazerSoud = document.getElementById("shootingUser");
       this.lazerSoud.volume = 0.5;
-      this.playerGames = [];
+      //TODO DELETE THIS WHEN FINISH
+      this.playerGames = [50,100,150];
       this.stopLazer();
 
    }
@@ -286,6 +287,8 @@ function initgame() {
    dispatchEvent(new Event("getusertable"));
    console.log("Game Init")
    document.getElementById("logoutbtn").addEventListener("click",logoutgame,false);
+
+   document.getElementById("comtinueafterloose").addEventListener("click",goBackToGame,false);
 }
 
 
@@ -730,16 +733,40 @@ function PlayerPenaltyHit()
       player.score += player.CurrGameScore;
       console.log("Player Total Score : " + player.score);
       console.log("Playe Current Game Score : " + player.CurrGameScore);
-      StopGame();
-      document.getElementById("gamePage").style.display = "none";
-      document.getElementById("youlostpage").style.display = "grid";
-      setTimeout(() => {
-         stopMusic();
-         document.getElementById("gamePage").style.display = "grid";
-         document.getElementById("youlostpage").style.display = "none";
-         
-      }, 5000);
+      createYouLostPage();
    }
+}
+function destroyPlayerUL(){
+   let userul = document.getElementById("youlostpageul");
+   while (userul.lastElementChild) {
+      userul.removeChild(userul.lastElementChild);
+    }
+}
+function goBackToGame(){
+   StopGame();
+   stopMusic();
+   document.getElementById("gamePage").style.display = "grid";
+   document.getElementById("youlostpage").style.display = "none";
+   destroyPlayerUL();
+   
+   
+}
+function createYouLostPage(){
+   userul = document.getElementById("youlostpageul");
+
+   for (let index = 0; index < player.playerGames.length; index++) {
+      const element = player.playerGames[index];
+      var li = document.createElement("li");
+      li.appendChild(document.createTextNode("Game Number:"+index+"Score:"+element))
+      userul.appendChild(li);
+      //TODO MAYBE ADD CLASS OR SPECIAL ID;
+   }
+
+   document.getElementById("gamePage").style.display = "none";
+   document.getElementById("youlostpage").style.display = "grid";
+
+     
+
 }
 function PlayerHit()
 {
