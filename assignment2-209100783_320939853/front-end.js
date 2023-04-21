@@ -9,6 +9,7 @@ var registerPagebtn;
 var loginbtn;
 var backHomebtn;
 var submitBtn ;
+var isShootingkeyselected = false;
 //
 var CurrUserName;
 //
@@ -58,6 +59,10 @@ function addEventListenersForAllbtns(){
    volumecontrol.addEventListener("change",changevolume,false);
    volLevel = document.getElementById("volumeLevel");
 
+   document.getElementById("ShootingKeyInput").addEventListener("dblclick",() =>{
+      document.getElementById("ShootingKeyInput").value = "";
+   },false);
+
 }
 function initbtns(){
    menubtns();
@@ -65,6 +70,7 @@ function initbtns(){
    setUpStrings();
    addEventListenersForAllbtns();
    mutemusic();
+   setDialogText();
    // setup hart images src //
    let images = document.getElementsByClassName("hartimg");
    for (let index = 0; index < images.length; index++) {
@@ -77,11 +83,17 @@ function initbtns(){
 
 }
 function loginPage(){
+   
    let page = document.getElementById("loginPage");
    let pastPage = document.getElementById("welcomePage");
-   pastPage.style.display = "none";
-   page.style.display = "grid";
-   CurrentlyDisplayed = page;
+   pastPage.style.backgroundImage = "url('resources/editedpar2background.gif')";
+   setTimeout(()=>{
+      pastPage.style.display = "none";
+      page.style.display = "grid";
+      CurrentlyDisplayed = page;
+      pastPage.style.backgroundImage = "url('resources/editedpar1background.gif')";
+   },"1500");
+  
 }
 function clearPasswordbtnText(){
    passwordInput.value = "";
@@ -164,6 +176,7 @@ function ShootingKeyConfigurationValidation()
       console.log("ShootingKey : " + ShootingKey +" ShootingKeyCode : " + ShootingKeyCode);
       if(ShootingKeyCode >= 65 && ShootingKeyCode <= 90 || ShootingKeyCode == 32)
       {
+         
          return true;
       }
    }
@@ -232,7 +245,8 @@ function Login_Button()
    loginPage();
 }
 function Home_Button()
-{
+{  
+   document.getElementById("menubtn1").style.transform = 'rotate(180deg)';
    document.getElementById("welcomePage").style.display = "grid";
    if(CurrentlyDisplayed != null){CurrentlyDisplayed.style.display = 'none';}
    CurrentlyDisplayed = document.getElementById("welcomePage");
@@ -407,7 +421,11 @@ function Modal_About()
    Modal_Window.addEventListener('click', function(e){
       if (e.target.id !== 'Modal_DIV' && e.target.id!=='menubtn4' && e.target.id !=='Dialog_Header' && e.target.id !=='DialogH2' && e.target.id !== 'DIALOGMAIN') {
          Modal_Window.close();}})
-}   
+}
+function setDialogText(){
+   let dig = document.getElementById("DIALOGMAIN");
+   dig.innerText = "heyyyy";
+}
 //this is event handel that handel return of a new player to set in the table usually when new user register
 window.addEventListener("returnplayer",function(e){
    setUserInTable(e.detail)

@@ -17,7 +17,8 @@ div#welcomePage{
    margin: auto;
    width: 100%;
    height: 100%;
-   background-image: url("resources/welcomepageBack.gif");
+   background-image: url("resources/editedpar1background.gif");
+   background-size:cover ;
    grid-template-columns: 1fr 1fr 1fr ;
    grid-template-rows: 4fr 1fr   ;
 }
@@ -44,12 +45,16 @@ div#configurationPage{
    /* transform: translate(-50%, -50%); */
    background: rgba(255, 255, 255, 0.95);
    box-sizing: border-box;
-   box-shadow: 0 15px 25px rgba(255, 213, 244, 0.7);
+   box-shadow: 0 15px 25px rgba(201, 219, 36, 0.7);
    border-radius: 10px;
    grid-row: 2/ span 1;
    grid-column: 2/ span 1;
 
 
+}
+div#configurationPage:hover{
+   transform: scale(1.05);
+   box-shadow: 0 15px 45px
 }
 div#configlocation{
    display: none;
@@ -102,10 +107,11 @@ body{
    font-family: "mainfont";
    padding: 0px;
    
-   margin: auto;
+   margin:auto;
+
    display: grid;
    grid-template-columns: 1fr;
-   grid-template-rows: 0.5fr 50fr 0.3fr;
+   grid-template-rows: 0.1fr 50fr 0.3fr;
    grid-row: 1/ span 2;
    grid-column: 1/ span 1;
    width: 95vh;
@@ -132,7 +138,7 @@ div#main{
    height: 100%;
 }
 div#gameButtons{
-   margin-top: 3%;
+   margin-top: 2%;
    grid-row: 3/ span 1;
    grid-column: 2/ span 1;
    text-align: center;
@@ -144,8 +150,8 @@ div#scoreBord{
    text-align: center;
    width: 95%;
    height: 100%;
-   border: 2px solid black;
-   align-self: center;
+   border: none;
+   text-align: center;
 }
 div#timerLifeBar
 {
@@ -172,8 +178,25 @@ div#backhome{
 }
 
 li.registerli{
-   list-style-type: none;
-   padding-top: 1%;
+   /* list-style-type: none;
+   padding-top: 1%; */
+   display: inline-block;
+   /* padding: 10px 20px; */
+   /* background-color: #FFD700; */
+   color: #000;
+   font-size: 16px;
+   font-weight: bold;
+   text-transform: uppercase;
+   letter-spacing: 2px;
+   text-align: center;
+   /* border: ; */
+   cursor: pointer;
+   position: relative;
+   /* overflow:auto; */
+   
+   width: 100%;
+   height: 10%;
+   z-index: 0;
    
 
 }
@@ -186,6 +209,7 @@ ul#registerDetailsList{
    text-align: center;
    padding: 0%;
    font-size: xx-large;
+   margin-top: 12%;
 }
 button#BackHomebtn{
    width: 100%;
@@ -204,10 +228,31 @@ ul#menulist{
    padding: 0px;
 }
 input.menutbtn{
+   display: inline-block;
+   padding: 10px 20px;
+   background-color: #FFD700;
+   color: #000;
+   font-size: 16px;
+   font-weight: bold;
+   text-transform: uppercase;
+   letter-spacing: 2px;
+   text-align: center;
+   /* border: ; */
+   cursor: pointer;
+   position: relative;
+   /* overflow:auto; */
+   transition: all 0.2s ease-in-out;
    width: 100%;
    height: 100%;
-   background-color: aqua;
+   z-index: 0;
    
+}
+input.menutbtn:hover{
+   
+   transform: scale(1.1);
+   cursor: pointer;
+   z-index: 1;
+
 }
 th,th,td{
    border: 2px solid black;
@@ -224,7 +269,7 @@ input{
    font-family: "mainfont";
 
 }
-th#lifeth{
+th.lifeth{
    font-family: "mainfont";
    border: none;
    width: 15%;
@@ -237,10 +282,10 @@ img.hartimg{
 }
 table#LifeTable{
    font-family: "mainfont";
-
+   text-align: center;
    border: none;
 }
-th.lifeTH{
+th#lifeTH{
    font-family: "mainfont";
 
    border: none;
@@ -270,9 +315,12 @@ div#header_list{
 div#footer{
    grid-row: 3/ span 1;
    grid-column: 1/ span 3;
-   margin: 0%f;
+   margin: 0%;
+   cursor: pointer;
+
 
 }
+
 ul#footerul{
    margin: 0%;
    width: 100%;
@@ -289,35 +337,47 @@ li#menuimg{
    text-align: center;
 }
 img#imgmenulist{
-   margin-top: 5%;
+   /* margin-top: 5%; */
    width: 50px;
    height: 50px;
    padding: 0%;
-   margin-bottom: 5%;
-   background-image:url("resources/bullet-egg-small.png");
+   /* margin-bottom: 5%; */
+   background-image:url("resources/logo.gif");
 }
 p.footerTags{
    margin: 0%;
    padding: 0%;
 }
 img#imageliyoulostimage{
-   background-image: url("resources/youloseimg1.png");
+   background-image: url("resources/youloseimg.png");
    background-size: cover;
-   width: 50%;
-   height: 50%;
-   padding-bottom: 50px;
+   width: 520px;
+   height: 290px;
+   margin-top: 5%;
+   overflow: hidden; 
+   border-radius: 8px; 
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+   transition: transform 0.3s ease-in-out; 
+
+}
+img#imageliyoulostimage:hover{
+
+   transform: scale(1.1);
+
 }
 div#imagecpmtaineryoulost{
    width: 100%;
    height: 100%;
    grid-row: 1/ span 1;
    grid-column: 1/ span 1;
+   text-align: center;
 }
 div#youloosedivlist{
-   width: 50%;
-   height: 50%;
+   width: 100%;
+   height: 100%;
    grid-row: 2/ span 1;
    grid-column: 1/ span 1;
+   text-align: center;
 }
 div#btnyoulostbtn{
    width: 100%;
@@ -330,5 +390,142 @@ div#btnyoulostbtn{
    top: 0;
    right: 0;
  }
+
+button#comtinueafterloose:hover {
+   background-color: #000;
+   color: #FFD700;
+   transform: scale(1.5);
+}
+button#loginbtn{
+   background-color: #FFD700;
+   color: #000;
+}
+button#loginbtn:hover{
+   color: #FFD700;
+   background-color: #000;
+   transform: scale(1.2);
+
+}
+button{
+   display: inline-block;
+   padding: 10px 20px;
+   background-color: #FFD700;
+   color: #000;
+   font-size: 16px;
+   font-weight: bold;
+   text-transform: uppercase;
+   letter-spacing: 2px;
+   text-align: center;
+   border: none;
+   cursor: pointer;
+   position: relative;
+   overflow: hidden;
+   transition: all 0.2s ease-in-out;
+}
+button:hover{
+   background-color: #000;
+   color: #FFD700;
+   transform: scale(1.4);
+   z-index: 1;
+}
+input#username{
+   width: 40%; /* Set the width of the input text element to 100% */
+   padding: 10px 15px; /* Add padding for spacing */
+   font-size: 16px; /* Set the font size */
+   background-color: #000; /* Set the background color to black */
+   color: #FFD700; /* Set the text color to gold */
+   border: none; /* Remove the default border */
+   border-bottom: 2px solid #FFD700; /* Add a gold border bottom */
+   outline: none; /* Remove the outline on focus */
+   letter-spacing: 1px; /* Add letter spacing for retro look */
+   transition: all 0.2s ease-in-out;
+
+}  
+input#password{
+   width: 40%; /* Set the width of the input text element to 100% */
+   padding: 10px 15px; /* Add padding for spacing */
+   font-size: 16px; /* Set the font size */
+   background-color: #000; /* Set the background color to black */
+   color: #FFD700; /* Set the text color to gold */
+   border: none; /* Remove the default border */
+   border-bottom: 2px solid #FFD700; /* Add a gold border bottom */
+   outline: none; /* Remove the outline on focus */
+   letter-spacing: 1px; /* Add letter spacing for retro look */
+   transition: all 0.2s ease-in-out;
+
+}
+li.liloginpage{
+   margin-bottom: 5%;
+}
+li.liloginpage:hover{
+   cursor: pointer;
+   transform: scale(1.05);
+}
+table.timeandlifebartable{
+   width: 100%;
+   height: 100%;
+   text-align: center;
+
+}
+tr#lifeandotherthingTR{
+   text-align: center;
+}
+input.gamebtnclsndr{
+   display: inline-block;
+   padding: 10px 20px;
+   background-color: #FFD700;
+   color: #000;
+   font-size: 16px;
+   font-weight: bold;
+   text-transform: uppercase;
+   letter-spacing: 2px;
+   text-align: center;
+   border: none;
+   cursor: pointer;
+   position: relative;
+   overflow: hidden;
+   transition: all 0.2s ease-in-out;
+}
+input.gamebtnclsndr:hover{
+   transform:scale(1.2) ;
+   background-color: #000;
+   color: #FFD700;
+   z-index: 1;
+
+}
+input.inputregisterclasses{
+   background-color: #000;
+   color: #FFD700;
+   transition: all 0.2s ease-in-out;
+}
+input.inputregisterclasses:hover{
+   transform: scale(1.4);
+   z-index: 1;
+}
+label.labelregister{
+   color: #FFD700;
+
+
+}
+input#submitform{
+   display: inline-block;
+   padding: 10px 20px;
+   background-color: #FFD700;
+   color: #000;
+   font-size: 14px;
+   font-weight: bold;
+   text-transform: uppercase;
+   letter-spacing: 2px;
+   text-align: center;
+   border: none;
+   cursor: pointer;
+   position: relative;
+   overflow: hidden;
+   transition: all 0.2s ease-in-out;
+}
+input#submitform:hover{
+   transform: scale(1.2);
+   z-index: 1;
+}
 #About_Modal {padding: 0;}
 #Modal_DIV {padding: 16px;}

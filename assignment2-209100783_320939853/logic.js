@@ -58,6 +58,8 @@ var IncreaseLimit;
 var gscorebar;
 
 // Music
+var enemyhitmusic
+var playerhitmusic
 
 var UserTable;
 class SpaceCraft {
@@ -160,8 +162,8 @@ class Player {
       this.CurrGameScore = 0;
       this.username;
       this.lazerSoud = document.getElementById("shootingUser");
-      this.lazerSoud.volume = 0.5;
-      //TODO DELETE THIS WHEN FINISH
+
+      // TODO DELETE THIS WHEN FINISH
       this.playerGames = [];
       this.stopLazer();
 
@@ -273,6 +275,9 @@ function initgame() {
    document.getElementById("logoutbtn").addEventListener("click",logoutgame,false);
 
    document.getElementById("comtinueafterloose").addEventListener("click",goBackToGame,false);
+   enemyhitmusic =  document.getElementById("enemyhitmusic");
+   playerhitmusic = document.getElementById("playerhitmusic");
+   
 }
 
 
@@ -342,6 +347,8 @@ function setUpGame() {
    TimerOn();     
    clearCanvas();
    startMusic();
+   canvas.width = $("#gameCanvas").width();
+   canvas.height = $("#gameCanvas").height() -5;
    console.log("clicked start game");
    // canvas.focus();
    startGameBtn.blur();   
@@ -360,6 +367,7 @@ function setUpGame() {
    enemyMovmentIntervalSpd = 60;
    StartIntervals();
    draw();
+   
 }
 function drawSpaceCraft() {
    for (let index = 0; index < enemySpaceCraft.enemy.length; index++) {
@@ -509,6 +517,7 @@ function EnemyCollisionConditions(enemyBullet)
 {
    if(enemyCollisionCondition_1(enemyBullet) || CollisionCondition_2(player, enemyBullet) || CollisionCondition_3(player, enemyBullet) || CollisionCondition_4(player,enemyBullet))
    {
+      enemyhitmusic.play();
       return true;
    }
    return false;
@@ -516,6 +525,7 @@ function EnemyCollisionConditions(enemyBullet)
 function CollisionEnemyBulletFirst(){
    if(EnemyCollisionConditions(EnemyBulletFirst))
    {
+      enemyhitmusic.play();
       console.log("HIT! By First");
       PlayerHit();
    }
@@ -599,8 +609,10 @@ function BulletCollision()
             if(CollisionCondition_1(enemyP) || CollisionCondition_2(enemyP,bullet) || CollisionCondition_3(enemyP,bullet) || CollisionCondition_4(enemyP,bullet))
             {
                enemyP.alive=false;
+               
                stopBulletInterval();
                PlayerHitReward(index);
+               playerhitmusic.play();
                if(SpaceCraftArmyIsDead())
                {
                   window.alert("Champion!");
@@ -737,8 +749,11 @@ function createYouLostPage(){
    for (let index = 0; index < player.playerGames.length; index++) {
       const element = player.playerGames[index];
       var li = document.createElement("li");
-      li.appendChild(document.createTextNode("Game# "+index+", Score : "+element))
+      let gamenum = index+1;
+      li.appendChild(document.createTextNode("Game# "+gamenum+", Score : "+element))
       userul.appendChild(li);
+      let br = document.createElement("br");
+      userul.appendChild(br);
       //TODO MAYBE ADD CLASS OR SPECIAL ID;
       //Or Maybe Table ? 
    }
@@ -952,7 +967,8 @@ function logoutgame(){
    stopMusic();
    document.getElementById("gamePage").style.display = "none";
    document.getElementById("welcomePage").style.display = "grid";
-
+   document.getElementById("username").value = "";
+   document.getElementById("password").value = "";
 }
 function savePlayerStats(){
    //TODO implement this
@@ -990,9 +1006,20 @@ function TimerRefresh()
    if(timeLeft < 0)
    {
       if(player.CurrGameScore < 100)
-      {window.alert("You can do better");}
+      {
+         
+         window.alert("You can do better" + player.CurrGameScore);
+         let endmusic = document.getElementById("endingMusic")
+         endmusic.play();
+         createYouLostPage();
+      }
       else
-      {window.alert("Winner !");}
+      {
+         window.alert("Winner !");
+         let endmusic = document.getElementById("endingMusic")
+         endmusic.play();
+         createYouLostPage();
+      }
       player.score += player.CurrGameScore;
       player.playerGames.push(player.CurrGameScore);
       StopGame();

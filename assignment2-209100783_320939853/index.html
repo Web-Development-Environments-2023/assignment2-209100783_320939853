@@ -13,6 +13,8 @@
       <audio class="music" src="resources/Music/Chiptune10. GORILLA vs HUMAN.mp3" preload="auto" loop autoplay id="mainMusic" ></audio>
       <audio class="music" src="resources/Music/lazeshot1best.wav" preload="auto"  autoplay id="shootingUser"></audio>
       <audio class="music" src="resources/Music/endMusic.mp3" preload="auto"  autoplay id="endingMusic"></audio>
+      <audio class="music" src="resources/Music/shootenemyhit.mp3" preload="auto"  autoplay id="enemyhitmusic"></audio>
+      <audio class="music" src="resources/Music/shootplayerhit.mp3" preload="auto"  autoplay id="playerhitmusic"></audio>
 
       <div id="header">
             <div id="header_list">
@@ -54,9 +56,9 @@
                   <h1 id="logintext_H">Login</h1>
                </div>
                <ul id="loginDetailsList">
-                  <li><input id = "username" type = "text" value = "Enter User Name"></li>
-                  <li><input id = "password" type = "password" value = "Enter Password"></li>
-                  <li><button type="button" id ="loginbtn">Login</button></li>
+                  <li class="liloginpage"><input id = "username" type = "text" value = "Enter User Name"></li>
+                  <li class="liloginpage"><input id = "password" type = "password" value = "Enter Password"></li>
+                  <li class="liloginpage"><button type="button" id ="loginbtn">Login</button></li>
                </ul>
             </div>
          </div>
@@ -75,32 +77,32 @@
                   <canvas id = "theCanvas"  width = "1000" height= "600"></canvas>
                </div>
                <div id="timerLifeBar">
-                  <table id="Timer&LifeTable">
+                  <table class="timeandlifebartable" id="Timer&LifeTable">
                      <tr>
-                        <th class="lifeth">Life Bar</th>
                         <th class="lifeth">Timer</th>
+                        <th class="lifeth">Life Bar</th>
                         <th class="lifeth">Game Score</th>
                      </tr>
                      <tr>
                         <th id="lifeTH">
+                           <p id="timer"></p>
+                        </th>
+                        <th class="lifeth">
                            <table id="LifeTable" >
-                              <tr>
+                              <tr id="lifeandotherthingTR">
                                  <th class="lifeth"><img class="hartimg" id="FirstLifeIMG" ></th>
                                  <th class="lifeth"><img class="hartimg" id="SecondLifeIMG" ></th>
                                  <th class="lifeth"><img class="hartimg" id="ThirdLifeIMG" ></th>
                               </tr>
                            </table>
                         </th>
-                        <th class="lifeth">
-                           <p id="timer"></p>
-                        </th>
                         <th class="lifeth"><p id="CurrentGameScore"></p></th>
                      </tr>
                   </table>
                </div>
                <div id="gameButtons">
-                  <input id = "startButton" type = "button" value = "Start Game">
-                  <input id = "logoutbtn" type = "button" value = "Logout">
+                  <input class="gamebtnclsndr" id = "startButton" type = "button" value = "Start Game">
+                  <input class="gamebtnclsndr" id = "logoutbtn" type = "button" value = "Logout">
                </div>
             </div>
          </div>
@@ -110,31 +112,31 @@
                   <ul id="registerDetailsList">
                      <li class="registerli">
                         <label class="labelregister" for="usernameInput">User Name</label>
-                        <input id = "usernameInput" type = "text"  style="width: 100%;" required>
+                        <input class="inputregisterclasses" id = "usernameInput" type = "text"  style="width: 100%;" required>
                      </li>
                      <li class="registerli">
                         <label class="labelregister" for="passwordInput">Password</label>                        
-                        <input id = "passwordInput" type = "password" style="width: 100%;"required>
+                        <input class="inputregisterclasses" id = "passwordInput" type = "password" style="width: 100%;"required>
                      </li>
                      <li class="registerli">
                         <label class="labelregister" for="passwordVerifyInput">Verify Password</label>
-                        <input id = "passwordVerifyInput" type = "text" style="width: 100%;" required>
+                        <input class="inputregisterclasses" id = "passwordVerifyInput" type = "text" style="width: 100%;" required>
                      </li>
                      <li class="registerli">
                         <label class="labelregister" for="firstNameInput">First Name</label>
-                        <input id = "firstNameInput" type = "text"       style="width: 100%;" required>
+                        <input class="inputregisterclasses" id = "firstNameInput" type = "text"       style="width: 100%;" required>
                      </li>
                      <li class="registerli">
                         <label class="labelregister" for="lastNameInput">Last Name</label>
-                        <input id = "lastNameInput" type = "text"        style="width: 100%;" required>
+                        <input class="inputregisterclasses" id = "lastNameInput" type = "text"        style="width: 100%;" required>
                      </li>
                      <li class="registerli">
                         <label class="labelregister" for="emailInput">eMail</label>
-                        <input id = "emailInput" type = "email" style="width: 100%;" required>
+                        <input class="inputregisterclasses" id = "emailInput" type = "email" style="width: 100%;" required>
                      </li>
                      <li class="registerli">
                         <label class="labelregister" for="birthDateInput">Birth Date</label>
-                        <input id = "birthDateInput" type = "date" max="" style="width: 100%;" required>
+                        <input class="inputregisterclasses" id = "birthDateInput" type = "date" max="" style="width: 100%;" required>
                      </li>
                      <li class="registerli"></li>
                   
@@ -154,8 +156,8 @@
                   <h2>Here We Will Set Our Configuration Settings Before Game Starts</h2>
                   <h3>When You are ready to proceed -> Click the Button</h3>
                   <ul id="Configuration Details">
-                     <li><input id = "ShootingKeyInput" type="text" value="Enter Shooting Key"></li>
-                     <li><label for="appt">Choose Game Time Length</label>
+                     <li class="liloginpage"><input id = "ShootingKeyInput" type="text" value="Enter Shooting Key"></li>
+                     <li class="liloginpage"><label for="appt">Choose Game Time Length</label>
                      <br>
                      <input type="range" id="appt" name="appt" min="120" max="600" required>
                      <p>Game Time Length: <output id="value"></output></p>
@@ -193,6 +195,8 @@
             </div>
          </div>
       </div>
+
+
       <div id="footer">
          <ul id="footerul">
             <li class="menuli">
@@ -210,7 +214,7 @@
             <button id="Close_Modal" class="Close_Modal">&times;</button>
             <h2 id="DialogH2">About</h2>
          </header>
-         <main id="DIALOGMAIN">TODO : Implement Info, Bullshit, Love, Sex, Rock'n'Roll, Ima Shel Eitan Ohevet Uti</main>
+         <main id="DIALOGMAIN"></main>
          </div>   
       </dialog>
    </body>
