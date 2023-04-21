@@ -52,6 +52,8 @@ var minutesLeft;
 var secondsLeft;
 var TimerInterval;
 var countDownDate;
+var Four_Seconds_For_Increasing;
+var IncreaseLimit;
 //Game Score Bar
 var gscorebar;
 
@@ -97,25 +99,7 @@ class SpaceCraft {
       }
 
    }
-   // getLeftMostBorder() {
-   //    return [this.enemy[0][0].x, this.enemy[0][0].y];
-   // }
-   // getRightMostBorder() {
-   //    let enemyShipLastRow = this.enemy[this.enemy.length - 1];
-   //    let enemyShipLastElement = enemyShipLastRow[enemyShipLastRow.length - 1];
-
-   //    return [enemyShipLastElement.x + enemyImageSizeWidth, enemyShipLastElement.y + enemyImageSizeHeight];
-   // }
    clearEnemyShip(ctx) {
-      // // [
-      // //    [first,e,e,e,e],
-      // //    [e,e,e,e,e],
-      // //    [e,e,e,e,last]
-      // // ]
-      // let firstEnemyCords = this.getLeftMostBorder();
-      // let lastEnemyCords = this.getRightMostBorder();
-
-      // ctx.clearRect(firstEnemyCords[0], firstEnemyCords[1], lastEnemyCords[0] - firstEnemyCords[0], lastEnemyCords[1] - firstEnemyCords[1]);
       ctx.clearRect(0,0,canvas.width,300);
    }
    moveEnemiesRight() {
@@ -178,7 +162,7 @@ class Player {
       this.lazerSoud = document.getElementById("shootingUser");
       this.lazerSoud.volume = 0.5;
       //TODO DELETE THIS WHEN FINISH
-      this.playerGames = [50,100,150];
+      this.playerGames = [];
       this.stopLazer();
 
    }
@@ -293,7 +277,8 @@ function initgame() {
 
 
 function clearCanvas() {
-   ctx.clearRect(0, 0, canvas.width, canvas.height);
+   if (ctx != null){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);}
 }
 
 
@@ -307,7 +292,6 @@ function StartIntervals() {
    intervalTimer = window.setInterval(updatePlayerPosition, TIME_INTERVAL);
    ShootInterval = window.setInterval(ShootDetected, TIME_INTERVAL);
    enemyInterval = window.setInterval(moveEnemeyShip, enemyMovmentIntervalSpd);
-   console.log("Intervals Initiated - startTimer");
 } // end function startTimer
 
 // terminate interval timer
@@ -338,7 +322,6 @@ function StopIntervals() {
 
    if(TimerInterval != null)
    {clearInterval(TimerInterval);}
-   console.log("Intervals Cleared - StopIntervals");
 } // end function stopTimer
 function VisibleLifeImages()
 {
@@ -467,7 +450,6 @@ function ShootEnemiesBullets(){
       EnemyBulletFirst.alive = true;
       EnemyBulletFirst.draw(ctx);
       MovingFirstEnemyBullet = window.setInterval(MoveEnemyFirstBullet,EnemyBulletMovementIntervalSpd);
-      console.log("Shooting Bullet#1");
       EnemyBulletFirstCollision = window.setInterval(CollisionEnemyBulletFirst, EnemyBulletMovementIntervalSpd);
    }
    if(SecondBulletConditions())
@@ -480,7 +462,6 @@ function ShootEnemiesBullets(){
          EnemyBulletSecond.alive = true;
          EnemyBulletSecond.draw(ctx);
          MovingSecondEnemyBullet = window.setInterval(MoveEnemySecondBullet,EnemyBulletMovementIntervalSpd);
-         console.log("Shooting Bullet#2");
          EnemyBulletSecondCollision = window.setInterval(CollisionEnemyBulletSecond, EnemyBulletMovementIntervalSpd);
    }
 }
@@ -620,13 +601,13 @@ function BulletCollision()
                enemyP.alive=false;
                stopBulletInterval();
                PlayerHitReward(index);
-               console.log("Player Current Game Score : " + player.CurrGameScore);
                if(SpaceCraftArmyIsDead())
                {
                   window.alert("Champion!");
-                  StopGame();
                   //Adding Current Player Score to Total Game Score
                   player.score += player.CurrGameScore;
+                  player.playerGames.push(player.CurrGameScore);
+                  StopGame();
                }
                return true;
             }
@@ -727,13 +708,13 @@ function PlayerPenaltyHit()
    KillLifeBarImages();
    if(player.hits == 3)
    {
+      StopGame();
       stopMusic();
       let endmusic = document.getElementById("endingMusic")
       endmusic.play();
       //Adding Current Player Score to Total Game Score
+      player.playerGames.push(player.CurrGameScore);
       player.score += player.CurrGameScore;
-      console.log("Player Total Score : " + player.score);
-      console.log("Playe Current Game Score : " + player.CurrGameScore);
       createYouLostPage();
    }
 }
@@ -748,9 +729,7 @@ function goBackToGame(){
    stopMusic();
    document.getElementById("gamePage").style.display = "grid";
    document.getElementById("youlostpage").style.display = "none";
-   destroyPlayerUL();
-   
-   
+   destroyPlayerUL();  
 }
 function createYouLostPage(){
    userul = document.getElementById("youlostpageul");
@@ -758,16 +737,14 @@ function createYouLostPage(){
    for (let index = 0; index < player.playerGames.length; index++) {
       const element = player.playerGames[index];
       var li = document.createElement("li");
-      li.appendChild(document.createTextNode("Game Number:"+index+"Score:"+element))
+      li.appendChild(document.createTextNode("Game# "+index+", Score : "+element))
       userul.appendChild(li);
       //TODO MAYBE ADD CLASS OR SPECIAL ID;
+      //Or Maybe Table ? 
    }
 
    document.getElementById("gamePage").style.display = "none";
    document.getElementById("youlostpage").style.display = "grid";
-
-     
-
 }
 function PlayerHit()
 {
@@ -867,7 +844,6 @@ function checkCollisionOnLeft() {
 }
 function moveEnemeyShip() {
    //Start Enemies Bullets Shooting
-   console.log("ShootEnemiesBullets();");
    ShootEnemiesBullets();
    if (enemySpaceCraft.moveRight) {
       if (checkCollisionOnRight()) {
@@ -915,11 +891,22 @@ function verifiedUser(obj){
    initgame();
 }
 
-
+function sortTable() {
+      let table = document.getElementById("scoreBordTable");
+      let rows = Array.from(table.getElementsByTagName("tr"));
+      rows.shift(); // Remove the header row from the array
+      rows.sort((row1, row2) => {
+        let score1 = parseInt(row1.querySelector("td:last-child").innerText);
+        let score2 = parseInt(row2.querySelector("td:last-child").innerText);
+        return score2 - score1; // Sort in descending order
+      });
+      rows.forEach(row => table.appendChild(row)); // Re-append the sorted rows to the table
+}
 function UpdateTableScore()
 {
    let tdScore = document.getElementById("score_"+ player.username);
    tdScore.innerText = player.score;
+   sortTable();
 }
 
 function createUserTableRow(val,key,map){
@@ -958,7 +945,6 @@ function initAdminPlayer(username){
    dispatchEvent(new CustomEvent("returnplayer",{detail:ply}))
 }
 
-
 function logoutgame(){
    savePlayerStats();
    StopIntervals();
@@ -980,6 +966,8 @@ function TimerOn()
    countDownDate = CurrentDate.getTime();
    //Refresh Timer each second
    TimerInterval = setInterval(TimerRefresh,1000);
+   Four_Seconds_For_Increasing = -1;
+   IncreaseLimit = 0;
 }
 function TimerOff()
 {
@@ -1006,9 +994,18 @@ function TimerRefresh()
       else
       {window.alert("Winner !");}
       player.score += player.CurrGameScore;
+      player.playerGames.push(player.CurrGameScore);
       StopGame();
    }
-
+   Four_Seconds_For_Increasing +=1;
+   if(Four_Seconds_For_Increasing == 4 && IncreaseLimit < 4)
+   {
+      enemyMovmentIntervalSpd = enemyMovmentIntervalSpd / 1.1;
+      clearInterval(enemyInterval);
+      enemyInterval = window.setInterval(moveEnemeyShip, enemyMovmentIntervalSpd);
+      Four_Seconds_For_Increasing = 0;
+      IncreaseLimit +=1;
+   }
 }
 ///// music section //////
 function startMusic(){
