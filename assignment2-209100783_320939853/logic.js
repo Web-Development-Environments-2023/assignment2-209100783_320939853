@@ -705,6 +705,7 @@ function StopGame()
 }
 function KillLifeBarImages()
 {
+   
    console.log("KillLifeBarImages")
    if(player.hits == 1)
    {
