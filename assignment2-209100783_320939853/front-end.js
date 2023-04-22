@@ -246,7 +246,7 @@ function Login_Button()
 }
 function Home_Button()
 {  
-   document.getElementById("menubtn1").style.transform = 'rotate(180deg)';
+   // document.getElementById("menubtn1").style.transform = 'rotate(180deg)';
    document.getElementById("welcomePage").style.display = "grid";
    if(CurrentlyDisplayed != null){CurrentlyDisplayed.style.display = 'none';}
    CurrentlyDisplayed = document.getElementById("welcomePage");
