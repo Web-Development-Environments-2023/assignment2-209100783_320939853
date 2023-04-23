@@ -7,7 +7,8 @@ const enemyBulletImageSizeHeight = 100;
 const enemyBulletImageSizewidth = 15;
 const enemyRowSize = 5;
 const enemyColSize = 4;
-const playerImageSrc = "resources/player-craft-1-smallest.png.jpg";
+// const playerImageSrc = "resources/player-craft-1-smallest.png.jpg";
+const playerImageSrc = "resources/ppp_new.png";
 const enemyImageSrc = "resources/Enemy_GIF.gif";
 const bulletimgSrc = "resources/laser.png";
 const enemyBulletimgsrc = "resources/bullet_bad.png";
@@ -615,11 +616,12 @@ function BulletCollision()
                playerhitmusic.play();
                if(SpaceCraftArmyIsDead())
                {
-                  window.alert("Champion!");
+                  console.log("Champion")
                   //Adding Current Player Score to Total Game Score
                   player.score += player.CurrGameScore;
                   player.playerGames.push(player.CurrGameScore);
                   StopGame();
+                  createYouLostPage(3);
                }
                return true;
             }
@@ -727,7 +729,7 @@ function PlayerPenaltyHit()
       //Adding Current Player Score to Total Game Score
       player.playerGames.push(player.CurrGameScore);
       player.score += player.CurrGameScore;
-      createYouLostPage();
+      createYouLostPage(0);
    }
 }
 function destroyPlayerUL(){
@@ -743,9 +745,34 @@ function goBackToGame(){
    document.getElementById("youlostpage").style.display = "none";
    destroyPlayerUL();  
 }
-function createYouLostPage(){
+function createYouLostPage(flag){
    userul = document.getElementById("youlostpageul");
-
+   imgul = document.getElementById("imageliyoulostimage");
+   let eeee = imgul.style.backgroundImage;
+   //You Lost
+   if(flag == 0){
+      imgul.style.backgroundImage= "url(resources/youloseimg.png)"
+      imgul.style.width  = '520px';
+      imgul.style.height = '290px';
+   }
+   //You Can do better
+   if(flag == 1){
+      imgul.style.backgroundImage= "url('resources/You_Can_BetterImg.png')"
+      imgul.style.width  = '520px';
+      imgul.style.height = '37px';
+   }
+   //Winner
+   if(flag == 2){
+      imgul.style.backgroundImage= "url('resources/Winner_IMG2.png')"
+      imgul.style.width  = '520px';
+      imgul.style.height = '81px';
+   }
+   //Champion
+   if (flag == 3){
+      imgul.style.backgroundImage= "url('resources/ChampionIMG2.png')"
+      imgul.style.width  = '520px';
+      imgul.style.height = '77px';
+   }
    for (let index = 0; index < player.playerGames.length; index++) {
       const element = player.playerGames[index];
       var li = document.createElement("li");
@@ -1008,17 +1035,17 @@ function TimerRefresh()
       if(player.CurrGameScore < 100)
       {
          
-         window.alert("You can do better" + player.CurrGameScore);
+         console.log("You Can Do Better");
          let endmusic = document.getElementById("endingMusic")
          endmusic.play();
-         createYouLostPage();
+         createYouLostPage(1);
       }
       else
       {
-         window.alert("Winner !");
+         console.log("Winner");
          let endmusic = document.getElementById("endingMusic")
          endmusic.play();
-         createYouLostPage();
+         createYouLostPage(2);
       }
       player.score += player.CurrGameScore;
       player.playerGames.push(player.CurrGameScore);

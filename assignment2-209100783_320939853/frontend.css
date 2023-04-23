@@ -337,12 +337,11 @@ li#menuimg{
    text-align: center;
 }
 img#imgmenulist{
-   /* margin-top: 5%; */
+   margin : 0%;
    width: 50px;
    height: 50px;
    padding: 0%;
-   /* margin-bottom: 5%; */
-   background-image:url("resources/logo.gif");
+   content:url("resources/Yoda.png");
 }
 p.footerTags{
    margin: 0%;
@@ -363,7 +362,6 @@ img#imageliyoulostimage{
 img#imageliyoulostimage:hover{
 
    transform: scale(1.1);
-
 }
 div#imagecpmtaineryoulost{
    width: 100%;
