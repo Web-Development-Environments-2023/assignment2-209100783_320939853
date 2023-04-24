@@ -75,11 +75,12 @@ function initbtns(){
    let images = document.getElementsByClassName("hartimg");
    for (let index = 0; index < images.length; index++) {
       const element = images[index];
-      element.src = "resources/heart.gif";
+      element.src = "resources/heart2.gif";
    }
 
    usersTablePasswords.set("p","testuser");
    initDefaultPlayer("p");
+   CurrentlyDisplayed = document.getElementById("welcomePage");
 
 }
 function loginPage(){
@@ -424,7 +425,18 @@ function Modal_About()
 }
 function setDialogText(){
    let dig = document.getElementById("DIALOGMAIN");
-   dig.innerHTML  = "Authors : Mark Tseytlin, Eitan Goldstein <br /> Game Instructions : You have to Shoot all enemy spaces without being hitted 3 times, movement is through arrow keys, shooting key can be configured by yourself in pre game settings.<br /> We've configured Game screen to show you Best Records Table - Try yourself break the record ! <br />jQuery Plugin : We've been using jQuery for small purposes, but our code mainly not using jQuery.<br /><br /> Difficulties during the Assignment : 1.Initiating User Array Storage - We would wish to work with DB for managing users easier.<br /> 2.Game Physics - We didnt take in account how much precision is required for The bullet shooting mechanism and collision detection, it was challenging. <br />3. ";
+   dig.innerHTML  = "Authors : Mark Tseytlin, Eitan Goldstein \<br >\
+   <br />Tesytlin@post.bgu.ac.il,  sEitang@post.bgu.ac.il\
+   <br /><br /> Game Instructions : You have to Shoot all enemy spaces without being hitted 3 times, movement is through arrow keys, shooting key can be configured by yourself in pre game settings.\
+   <br /><br />Special Implementations : \
+   <br />1.We've configured Game screen to show you Best Records Table - Try yourself break the record !\
+   <br />2.You Can Manage Volume Level through Configuration screen !\
+   <br /><br />jQuery Plugin : We've been using jQuery for small purposes (managing Canvas properties through JS modules), but our code mainly not using jQuery.\
+   <br /><br /> Difficulties during the Assignment :\
+   <br />1.Initiating User Array Storage - We would wish to work with DB for managing users easier.\
+   <br />2.Game Physics - We didnt take in account how much precision is required for The bullet shooting mechanism and collision detection, it was challenging.\
+   <br />3.Designing : We're being Technical persons and we're suffering from lack of designing creativity, we made our best efforts to make the site look playable and pleasant!\
+   <br /><br />Enjoy The Game ! ";
 }
 //this is event handel that handel return of a new player to set in the table usually when new user register
 window.addEventListener("returnplayer",function(e){

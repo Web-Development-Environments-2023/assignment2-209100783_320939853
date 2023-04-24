@@ -790,7 +790,9 @@ function createYouLostPage(flag){
    }
 
    document.getElementById("gamePage").style.display = "none";
+   CurrentlyDisplayed.style.display = "none";
    document.getElementById("youlostpage").style.display = "grid";
+   CurrentlyDisplayed = document.getElementById("youlostpage");
 }
 function PlayerHit()
 {
