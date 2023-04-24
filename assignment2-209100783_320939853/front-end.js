@@ -425,8 +425,8 @@ function Modal_About()
 }
 function setDialogText(){
    let dig = document.getElementById("DIALOGMAIN");
-   dig.innerHTML  = "Authors : Mark Tseytlin, Eitan Goldstein \<br >\
-   <br />Tesytlin@post.bgu.ac.il,  sEitang@post.bgu.ac.il\
+   dig.innerHTML  = "Authors : Mark Tseytlin, Eitan Goldshtein \<br >\
+   <br />Tesytlin@post.bgu.ac.il,  eitag@post.bgu.ac.il\
    <br /><br /> Game Instructions : You have to Shoot all enemy spaces without being hitted 3 times, movement is through arrow keys, shooting key can be configured by yourself in pre game settings.\
    <br /><br />Special Implementations : \
    <br />1.We've configured Game screen to show you Best Records Table - Try yourself break the record !\

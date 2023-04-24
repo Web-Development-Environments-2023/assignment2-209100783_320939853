@@ -38,9 +38,11 @@ div#loginPage{
 }
 a#contactli1{
    color: red;
+   text-align: center;
 }
 a#contactli2{
    color: red;
+   text-align: center;
    
 }
 
@@ -327,6 +329,15 @@ li.menuli{
    width: 100%;
    height: auto;
    text-align: center;
+}
+li.menuli2{
+   font-family: "mainfont";
+   display: flex;
+   width: 20%;
+   height: auto;
+   text-align: center;
+   margin-right: 10%;
+   margin-left: 18%;
 }
 div#youlostpage{
    width: 100%;
