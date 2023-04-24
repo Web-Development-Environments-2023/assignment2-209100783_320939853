@@ -966,16 +966,18 @@ function createUserTableRow(val,key,map){
       tdScore.id = "score_"+val.username;
       tdPlayer.innerText = val.username;
       tdScore.innerText = val.score;
+      tdPlayer.style.textAlign = "center";
+      tdScore.style.textAlign = "center";
       tr.appendChild(tdPlayer);
       tr.appendChild(tdScore);
       table.appendChild(tr);
    }
 }
-function getPlayersTable(){
-	// $.getScript("front-end.js", function(){
- 	// 	 return getPlayersTable();
-	// });
-}
+// function getPlayersTable(){
+// 	// $.getScript("front-end.js", function(){
+//  	// 	 return getPlayersTable();
+// 	// });
+// }
 
 function createLeadBord(usertable_out){
    let userTable = usertable_out;
