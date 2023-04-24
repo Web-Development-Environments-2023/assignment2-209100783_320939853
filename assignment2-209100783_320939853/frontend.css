@@ -107,7 +107,8 @@ div#gameCanvas{
 body{
    font-family: "mainfont";
    padding: 0px;
-   
+   background-image: url("resources/bg3.gif");
+   background-size: cover;
    margin:auto;
 
    display: grid;
