@@ -749,6 +749,7 @@ function goBackToGame(){
    destroyPlayerUL();  
 }
 function createYouLostPage(flag){
+   destroyPlayerUL();  
    userul = document.getElementById("youlostpageul");
    imgul = document.getElementById("imageliyoulostimage");
    let eeee = imgul.style.backgroundImage;
