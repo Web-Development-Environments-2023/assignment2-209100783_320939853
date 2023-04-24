@@ -424,7 +424,7 @@ function Modal_About()
 }
 function setDialogText(){
    let dig = document.getElementById("DIALOGMAIN");
-   dig.innerText = "heyyyy";
+   dig.innerHTML  = "Authors : Mark Tseytlin, Eitan Goldstein <br /> Game Instructions : You have to Shoot all enemy spaces without being hitted 3 times, movement is through arrow keys, shooting key can be configured by yourself in pre game settings.<br /> We've configured Game screen to show you Best Records Table - Try yourself break the record ! <br />jQuery Plugin : We've been using jQuery for small purposes, but our code mainly not using jQuery.<br /><br /> Difficulties during the Assignment : 1.Initiating User Array Storage - We would wish to work with DB for managing users easier.<br /> 2.Game Physics - We didnt take in account how much precision is required for The bullet shooting mechanism and collision detection, it was challenging. <br />3. ";
 }
 //this is event handel that handel return of a new player to set in the table usually when new user register
 window.addEventListener("returnplayer",function(e){
