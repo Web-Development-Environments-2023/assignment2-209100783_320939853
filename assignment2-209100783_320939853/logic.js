@@ -1,4 +1,4 @@
-const playerImageSize = 30;
+const playerImageSize = 50;
 const bulletImageSizeHeight = 100;
 const bulletImageSizeWidth = 15;
 const enemyImageSizeHeight = 50;
@@ -8,7 +8,7 @@ const enemyBulletImageSizewidth = 15;
 const enemyRowSize = 5;
 const enemyColSize = 4;
 // const playerImageSrc = "resources/player-craft-1-smallest.png.jpg";
-const playerImageSrc = "resources/ppp_new.png";
+const playerImageSrc = "resources/resized_ppp.png";
 const enemyImageSrc = "resources/Enemy_GIF.gif";
 const bulletimgSrc = "resources/laser.png";
 const enemyBulletimgsrc = "resources/bullet_bad.png";
@@ -173,7 +173,10 @@ class Player {
       ctx.drawImage(player.image, player.x, player.y);
    }
    clearAndDrawPlayer(x, y, ctx) {
-      ctx.clearRect(x - 20, y - 20, x + playerImageSize, y + playerImageSize);
+      console.log("Player x : " + this.x + ", Player Y : " + this.y)
+      // ctx.clearRect(x - playerImageSize, y - playerImageSize, x + playerImageSize, y + playerImageSize);
+      ctx.clearRect(x , y , x + playerImageSize, y + playerImageSize);
+
       ctx.drawImage(player.image, player.x, player.y);
    }
    clear(ctx)
