@@ -749,6 +749,7 @@ function goBackToGame(){
    destroyPlayerUL();  
 }
 function createYouLostPage(flag){
+   destroyPlayerUL();  
    userul = document.getElementById("youlostpageul");
    imgul = document.getElementById("imageliyoulostimage");
    let eeee = imgul.style.backgroundImage;
@@ -1001,8 +1002,8 @@ function logoutgame(){
    stopMusic();
    document.getElementById("gamePage").style.display = "none";
    document.getElementById("welcomePage").style.display = "grid";
-   document.getElementById("username").value = "";
-   document.getElementById("password").value = "";
+   document.getElementById("username").value = "Enter User Name";
+   document.getElementById("password").value = "123456";
 }
 function savePlayerStats(){
    //TODO implement this
