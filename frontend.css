@@ -124,8 +124,8 @@ div#gamePage{
    width: 100%;
    height: 100%;
    display: none;
-   background-color: 	rgb(248,248,248);
-   /* background-image:url("resources/welcomepageBack.gif") */
+  
+   background: transparent;
 }
 div#gameCanvas{
    grid-row: 2/ span 1;
