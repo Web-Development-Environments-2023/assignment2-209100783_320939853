@@ -8,8 +8,8 @@ const enemyBulletImageSizewidth = 15;
 const enemyRowSize = 5;
 const enemyColSize = 4;
 // const playerImageSrc = "resources/player-craft-1-smallest.png.jpg";
-const playerImageSrc = "resources/resized_ppp.png";
-const enemyImageSrc = "resources/Enemy_GIF.gif";
+// const playerImageSrc = "resources/resized_ppp.png";
+// const enemyImageSrc = "resources/Enemy_GIF.gif";
 
 
 const bulletimgSrc = "resources/laser.png";
