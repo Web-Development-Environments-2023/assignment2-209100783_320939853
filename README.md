@@ -33,7 +33,7 @@ We were inspired by the classic arcade game Chicken Invaders, and wanted to crea
 [Artist](https://soundcloud.com/harayuu/tracks)
 
 ### Link to Game WebSite : 
-
+[Check out our Online Website](https://web-development-environments-2023.github.io/assignment2-209100783_320939853/){:target="_blank"}
 ### Authors IDs : 
 * 320939853
 * 209100783
