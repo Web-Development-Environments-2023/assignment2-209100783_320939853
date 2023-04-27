@@ -1,8 +1,8 @@
 const playerImageSize = 50;
 const bulletImageSizeHeight = 100;
 const bulletImageSizeWidth = 15;
-const enemyImageSizeHeight = 50;
-const enemyImageSizeWidth = 50;
+const enemyImageSizeHeight = 30;
+const enemyImageSizeWidth = 41;
 const enemyBulletImageSizeHeight = 100;
 const enemyBulletImageSizewidth = 15;
 const enemyRowSize = 5;
@@ -10,6 +10,8 @@ const enemyColSize = 4;
 // const playerImageSrc = "resources/player-craft-1-smallest.png.jpg";
 const playerImageSrc = "resources/resized_ppp.png";
 const enemyImageSrc = "resources/Enemy_GIF.gif";
+
+
 const bulletimgSrc = "resources/laser.png";
 const enemyBulletimgsrc = "resources/bullet_bad.png";
 const bulletCollisionIntervalSpeed = 0.25;
@@ -78,7 +80,8 @@ class SpaceCraft {
          let element = this.enemy[index];
          let lastXPos = 0;
          for (let enIdx = 0; enIdx < element.length; enIdx++) {
-            let enemyP = new Enemy(enemyImageSrc, enemyImageSizeWidth, enemyImageSizeHeight);
+            const enemyImageSrcRowidx = `resources/small-enemy_r${index+1}.png`;
+            let enemyP = new Enemy(enemyImageSrcRowidx, enemyImageSizeWidth, enemyImageSizeHeight);
             enemyP.x = lastXPos + 20;
             lastXPos += 20 + enemyImageSizeWidth;
             enemyP.y = lastYPos + 20;

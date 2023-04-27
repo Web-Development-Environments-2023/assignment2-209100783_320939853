@@ -429,9 +429,11 @@ function setDialogText(){
    <br />Tesytlin@post.bgu.ac.il,  eitag@post.bgu.ac.il\
    <br /><br /> Game Instructions : You have to Shoot all enemy spaces without being hitted 3 times, movement is through arrow keys, shooting key can be configured by yourself in pre game settings.\
    <br /><br />Special Implementations : \
-   <br />1.We've configured Game screen to show you Best Records Table - Try yourself break the record !\
-   <br />2.You Can Manage Volume Level through Configuration screen !\
-   <br /><br />jQuery Plugin : We've been using jQuery for small purposes (managing Canvas properties through JS modules), but our code mainly not using jQuery.\
+   <br />1.We've configured Game to be in 8 Bit theme so we all can get back to when we were kid's !\
+   <br />2.We've also configured Game font to be in 8 bit style !\
+   <br />3.We've configured Game screen to show you Best Records Table - Try yourself break the record !\
+   <br />4.You Can Manage Volume Level through Configuration screen !\
+   <br /><br />jQuery Plugin : We've been using jQuery for small purposes (getting Canvas properties as Width & Height).\
    <br /><br /> Difficulties during the Assignment :\
    <br />1.Initiating User Array Storage - We would wish to work with DB for managing users easier.\
    <br />2.Game Physics - We didnt take in account how much precision is required for The bullet shooting mechanism and collision detection, it was challenging.\
